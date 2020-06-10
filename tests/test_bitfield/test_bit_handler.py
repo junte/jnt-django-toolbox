@@ -25,7 +25,7 @@ def test_defaults():
     assert int(bithandler.FLAG_3.number) == 3
 
     with pytest.raises(AttributeError):
-        flag = bithandler.FLAG_4
+        flag = bithandler.FLAG_4  # noqa: F841
 
     assert not bool(bithandler.FLAG_0)
     assert not bool(bithandler.FLAG_1)
