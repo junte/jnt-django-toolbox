@@ -1,0 +1,60 @@
+[tool.poetry]
+name = "jnt-django-toolbox"
+version = "0.1.0"
+description = ""
+authors = ["Junte <tech@junte.ru>"]
+classifiers=[
+        'Environment :: Web Environment',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: MIT License',
+        'Operating System :: OS Independent',
+        'Framework :: Django :: 2',
+        'Framework :: Django :: 3',
+        'Topic :: Software Development :: Libraries :: Python Modules'
+]
+
+packages = [
+    { include = "jnt_django_toolbox", from ="src" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+django = ">=3"
+
+[tool.poetry.dev-dependencies]
+mypy = "*"
+polint = "*"
+dennis = "*"
+xenon = "*"
+safety = "*"
+pytest = "*"
+pytest-cov = "*"
+pytest-django = "*"
+pytest-xdist = "*"
+factory-boy = "*"
+flake8 = "*"
+flake8-pytest-style = "*"
+flake8-coding = "*"
+pytest-freezegun = "*"
+wemake-python-styleguide = "*"
+black = "^19.10b0"
+flake8-class-attributes-order = "*"
+
+[tool.black]
+line-length = 79
+target-version = ['py38']
+include = '\.pyi?$'
+exclude = '''
+(
+  /(
+    | \.git          # root of the project
+    | \.mypy_cache
+    | \.pytest_cache
+    | .*\/migrations
+  )/
+)
+'''
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"

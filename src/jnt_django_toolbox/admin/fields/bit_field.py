@@ -1,0 +1,31 @@
+from django.forms import IntegerField, ValidationError
+from jnt_django_toolbox.admin.widgets.bit_field import BitFieldWidget
+from jnt_django_toolbox.models.fields.bit_field.types import BitHandler
+
+
+class BitFieldFormField(IntegerField):
+    def __init__(self, choices=(), widget=BitFieldWidget, *args, **kwargs):
+
+        if isinstance(kwargs["initial"], int):
+            iv = kwargs["initial"]
+            iv_list = []
+            for i in range(0, min(len(choices), 63)):
+                if (1 << i) & iv > 0:
+                    iv_list += [choices[i][0]]
+            kwargs["initial"] = iv_list
+        self.widget = widget
+        super().__init__(widget=widget, *args, **kwargs)
+        self.choices = self.widget.choices = choices
+
+    def clean(self, value):
+        if not value:
+            return 0
+
+        # Assume an iterable which contains an item per flag that's enabled
+        result = BitHandler(0, [k for k, v in self.choices])
+        for k in value:
+            try:
+                setattr(result, str(k), True)
+            except AttributeError:
+                raise ValidationError("Unknown choice: {0}".format(k))
+        return int(result)
