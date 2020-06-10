@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.forms import IntegerField, ValidationError
 from jnt_django_toolbox.admin.widgets.bit_field import BitFieldWidget
 from jnt_django_toolbox.models.fields.bit_field.types import BitHandler
@@ -15,14 +17,15 @@ class BitFieldFormField(IntegerField):
             kwargs["initial"] = iv_list
         self.widget = widget
         super().__init__(widget=widget, *args, **kwargs)
-        self.choices = self.widget.choices = choices
+        self.choices = choices
+        self.widget.choices = choices
 
     def clean(self, value):
         if not value:
             return 0
 
         # Assume an iterable which contains an item per flag that's enabled
-        result = BitHandler(0, [k for k, v in self.choices])
+        result = BitHandler(0, [key for key, value in self.choices])
         for k in value:
             try:
                 setattr(result, str(k), True)

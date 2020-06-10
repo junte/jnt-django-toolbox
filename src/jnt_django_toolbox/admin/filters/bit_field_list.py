@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import six
 
 from django.db.models import F
@@ -5,9 +7,7 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.admin import FieldListFilter
 from django.contrib.admin.options import IncorrectLookupParameters
-
-from bitfield import Bit
-from bitfield.compat import bitor
+from jnt_django_toolbox.models.fields.bit_field.types import Bit
 
 
 class BitFieldListFilter(FieldListFilter):
@@ -17,13 +17,13 @@ class BitFieldListFilter(FieldListFilter):
         self.flags = field.flags
         self.labels = field.labels
         super().__init__(
-            field, request, params, model, model_admin, field_path
+            field, request, params, model, model_admin, field_path,
         )
 
     def queryset(self, request, queryset):
-        filter = dict(
-            (p, bitor(F(p), v)) for p, v in six.iteritems(self.used_parameters)
-        )
+        filter = {
+            p: F(p).bitor(v) for p, v in six.iteritems(self.used_parameters)
+        }
         try:
             return queryset.filter(**filter)
         except ValidationError as e:
@@ -43,7 +43,7 @@ class BitFieldListFilter(FieldListFilter):
             yield {
                 "selected": self.lookup_val == bit_mask,
                 "query_string": cl.get_query_string(
-                    {self.lookup_kwarg: bit_mask}
+                    {self.lookup_kwarg: bit_mask},
                 ),
                 "display": self.labels[number],
             }

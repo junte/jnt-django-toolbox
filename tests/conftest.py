@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import os.path
 import sys
 
@@ -18,15 +20,15 @@ def pytest_configure(config):
                 {
                     "ENGINE": "django.db.backends.postgresql",
                     "USER": "postgres",
-                }
+                },
             )
         elif test_db == "mysql":
             DATABASES["default"].update(
-                {"ENGINE": "django.db.backends.mysql", "USER": "root",}
+                {"ENGINE": "django.db.backends.mysql", "USER": "root"},
             )
         elif test_db == "sqlite":
             DATABASES["default"].update(
-                {"ENGINE": "django.db.backends.sqlite3", "NAME": ":memory:"}
+                {"ENGINE": "django.db.backends.sqlite3", "NAME": ":memory:"},
             )
         else:
             raise NotImplementedError

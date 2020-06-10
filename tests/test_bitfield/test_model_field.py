@@ -41,7 +41,7 @@ def test_negative_in_raw_sql(db):
     cursor.execute(
         "INSERT INTO {0} ({1}) VALUES (-1)".format(
             BitFieldTestModel._meta.db_table, flags_db_column,
-        )
+        ),
     )
     # There should only be the one row we inserted through the cursor.
     instance = BitFieldTestModel.objects.get(flags=-1)
@@ -61,13 +61,13 @@ def test_select(db):
         flags=BitFieldTestModel.flags.FLAG_1,
     ).exists()
     assert BitFieldTestModel.objects.filter(
-        flags=BitFieldTestModel.flags.FLAG_0
+        flags=BitFieldTestModel.flags.FLAG_0,
     ).exists()
     assert not BitFieldTestModel.objects.exclude(
-        flags=BitFieldTestModel.flags.FLAG_0
+        flags=BitFieldTestModel.flags.FLAG_0,
     ).exists()
     assert not BitFieldTestModel.objects.exclude(
-        flags=BitFieldTestModel.flags.FLAG_1
+        flags=BitFieldTestModel.flags.FLAG_1,
     ).exists()
 
 
@@ -92,11 +92,11 @@ def test_update(db):
     assert instance.flags.FLAG_1
     assert instance.flags.FLAG_3
     assert not BitFieldTestModel.objects.filter(
-        flags=BitFieldTestModel.flags.FLAG_0
+        flags=BitFieldTestModel.flags.FLAG_0,
     ).exists()
 
     BitFieldTestModel.objects.filter(pk=instance.pk).update(
-        flags=F("flags").bitand(~BitFieldTestModel.flags.FLAG_3)
+        flags=F("flags").bitand(~BitFieldTestModel.flags.FLAG_3),
     )
     instance = BitFieldTestModel.objects.get(pk=instance.pk)
     assert not instance.flags.FLAG_0
@@ -111,7 +111,7 @@ def test_update_with_handler(db):
     instance.flags.FLAG_1 = True
 
     BitFieldTestModel.objects.filter(pk=instance.pk).update(
-        flags=F("flags").bitor(instance.flags)
+        flags=F("flags").bitor(instance.flags),
     )
     instance = BitFieldTestModel.objects.get(pk=instance.pk)
     assert instance.flags.FLAG_1
@@ -119,7 +119,7 @@ def test_update_with_handler(db):
 
 def test_negate(db):
     BitFieldTestModel.objects.create(
-        flags=BitFieldTestModel.flags.FLAG_0 | BitFieldTestModel.flags.FLAG_1
+        flags=BitFieldTestModel.flags.FLAG_0 | BitFieldTestModel.flags.FLAG_1,
     )
     BitFieldTestModel.objects.create(flags=BitFieldTestModel.flags.FLAG_1)
     assert (
@@ -199,7 +199,7 @@ def test_dictionary_init(db):
 
 class DefaultKeyNamesModel(models.Model):
     flags = BitField(
-        flags=("FLAG_0", "FLAG_1", "FLAG_2", "FLAG_3",),
+        flags=("FLAG_0", "FLAG_1", "FLAG_2", "FLAG_3"),
         default=("FLAG_1", "FLAG_2"),
     )
 

@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import pickle
 
 from jnt_django_toolbox.models.fields.bit_field.types import BitHandler
@@ -19,7 +21,7 @@ def test_pickle_integration(db):
     inst = BitFieldTestModel.objects.create(flags=1)
     data = pickle.dumps(inst)
     inst = pickle.loads(data)
-    assert type(inst.flags) == BitHandler
+    assert isinstance(inst.flags, BitHandler)
     assert int(inst.flags) == 1
 
 

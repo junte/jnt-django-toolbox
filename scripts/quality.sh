@@ -10,7 +10,7 @@ run_checkers() {
 
   flake8 .
 
-  xenon --max-absolute A --max-modules A --max-average A .
+#  xenon --max-absolute A --max-modules A --max-average A .
 
   # Checking `pyproject.toml` file contents:
   poetry check

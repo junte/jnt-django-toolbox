@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+from contextlib import suppress
+
 from jnt_django_toolbox.models.fields.bit_field.types import Bit, BitHandler
 
 
@@ -27,16 +30,16 @@ class BitQueryLookupWrapper:
         )
 
 
-try:
+with suppress(ImportError):
     from django.db.models.lookups import Exact
 
     class BitQueryLookupWrapper(Exact):  # NOQA
         def process_lhs(self, qn, connection, lhs=None):
             lhs_sql, params = super().process_lhs(qn, connection, lhs)
             if self.rhs:
-                lhs_sql = lhs_sql + " & %s"
+                lhs_sql = "{0} & %s".format(lhs_sql)
             else:
-                lhs_sql = lhs_sql + " | %s"
+                lhs_sql = "{0} | %s".format(lhs_sql)
             params.extend(self.get_db_prep_lookup(self.rhs, connection)[1])
             return lhs_sql, params
 
@@ -46,10 +49,6 @@ try:
 
         def get_prep_lookup(self):
             return self.rhs
-
-
-except ImportError:
-    pass
 
 
 class BitQuerySaveWrapper(BitQueryLookupWrapper):

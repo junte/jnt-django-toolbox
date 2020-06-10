@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+
+from contextlib import suppress
+
 import six
 from django.db.models.fields import BigIntegerField, Field
 from jnt_django_toolbox.models.fields.bit_field.query import (
@@ -23,26 +27,24 @@ class BitFieldFlags:
         return repr(self._flags)
 
     def __iter__(self):
-        for flag in self._flags:
-            yield flag
+        yield from self._flags
 
     def __getattr__(self, key):
         if key not in self._flags:
-            raise AttributeError(f"flag {key} is not registered")
+            raise AttributeError("flag {0} is not registered".format(key))
 
         return Bit(self._flags.index(key))
 
     def iteritems(self):
-        for flag in self._flags:
-            yield flag, Bit(self._flags.index(flag))
+        yield from (
+            (flag, Bit(self._flags.index(flag))) for flag in self._flags
+        )
 
     def iterkeys(self):
-        for flag in self._flags:
-            yield flag
+        yield from self._flags
 
     def itervalues(self):
-        for flag in self._flags:
-            yield Bit(self._flags.index(flag))
+        yield from (Bit(self._flags.index(flag)) for flag in self._flags)
 
     def items(self):
         return list(self.iteritems())
@@ -80,10 +82,6 @@ class BitFieldCreator:
 
 
 class BitField(BigIntegerField):
-    def contribute_to_class(self, cls, name, **kwargs):
-        super().contribute_to_class(cls, name, **kwargs)
-        setattr(cls, self.name, BitFieldCreator(self))
-
     def __init__(self, flags, default=None, *args, **kwargs):
         if isinstance(flags, dict):
             # Get only integer keys in correct range
@@ -120,13 +118,16 @@ class BitField(BigIntegerField):
         self.flags = flags
         self.labels = labels
 
+    def contribute_to_class(self, cls, name, **kwargs):
+        super().contribute_to_class(cls, name, **kwargs)
+        setattr(cls, self.name, BitFieldCreator(self))
+
     def formfield(self, form_class=BitFieldFormField, **kwargs):
         choices = [(k, self.labels[self.flags.index(k)]) for k in self.flags]
         return Field.formfield(self, form_class, choices=choices, **kwargs)
 
     def pre_save(self, instance, add):
-        value = getattr(instance, self.attname)
-        return value
+        return getattr(instance, self.attname)
 
     def get_prep_value(self, value):
         if value is None:
@@ -141,20 +142,12 @@ class BitField(BigIntegerField):
     #     return super(BitField, self).get_db_prep_save(value, connection=connection)
 
     def get_db_prep_lookup(
-        self, lookup_type, value, connection, prepared=False
+        self, lookup_type, value, connection, prepared=False,
     ):
         if isinstance(getattr(value, "expression", None), Bit):
             value = value.expression
         if isinstance(value, (BitHandler, Bit)):
-            if hasattr(self, "class_lookups"):
-                # Django 1.7+
-                return [value.mask]
-            else:
-                return BitQueryLookupWrapper(
-                    self.model._meta.db_table,
-                    self.db_column or self.name,
-                    value,
-                )
+            return [value.mask]
         return BigIntegerField.get_db_prep_lookup(
             self,
             lookup_type=lookup_type,
@@ -167,10 +160,12 @@ class BitField(BigIntegerField):
         if isinstance(getattr(value, "expression", None), Bit):
             value = value.expression
         if isinstance(value, Bit):
-            if lookup_type in ("exact",):
+            if lookup_type == "exact":
                 return value
             raise TypeError(
-                "Lookup type %r not supported with `Bit` type." % lookup_type
+                "Lookup type {0!r} not supported with `Bit` type.".format(
+                    lookup_type,
+                ),
             )
         return BigIntegerField.get_prep_lookup(self, lookup_type, value)
 
@@ -199,7 +194,5 @@ class BitField(BigIntegerField):
         return name, path, args, kwargs
 
 
-try:
+with suppress(AttributeError):
     BitField.register_lookup(BitQueryLookupWrapper)
-except AttributeError:
-    pass

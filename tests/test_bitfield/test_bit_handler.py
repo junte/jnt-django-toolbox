@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import pytest
 from jnt_django_toolbox.models.fields.bit_field.types import BitHandler
 
@@ -6,7 +8,7 @@ def test_comparison():
     bithandler_1 = BitHandler(0, ("FLAG_0", "FLAG_1", "FLAG_2", "FLAG_3"))
     bithandler_2 = BitHandler(1, ("FLAG_0", "FLAG_1", "FLAG_2", "FLAG_3"))
     bithandler_3 = BitHandler(0, ("FLAG_0", "FLAG_1", "FLAG_2", "FLAG_3"))
-    assert bithandler_1 == bithandler_1
+    assert bithandler_1 == bithandler_1  # noqa: WPS312
     assert bithandler_1 != bithandler_2
     assert bithandler_1 == bithandler_3
 

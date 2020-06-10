@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+
+from contextlib import suppress
+
 from django.core.exceptions import ImproperlyConfigured
 from six import string_types
 
@@ -49,7 +53,7 @@ class Bit:
         return value == self.is_set
 
     def __ne__(self, value):
-        return not self == value
+        return not self == value  # noqa: WPS508
 
     def __coerce__(self, value):
         return (self.is_set, bool(value))
@@ -117,7 +121,7 @@ class Bit:
         return evaluator.prepare_node(self, query, allow_joins)
 
 
-class BitHandler(object):
+class BitHandler:
     """
     Represents an array of bits, each as a ``Bit`` object.
     """
@@ -152,10 +156,10 @@ class BitHandler(object):
         return cmp(self._value, other)
 
     def __repr__(self):
-        return "<%s: %s>" % (
+        return "<{0}: {1}>".format(
             self.__class__.__name__,
             ", ".join(
-                "%s=%s" % (k, self.get_bit(n).is_set)
+                "{0}={1}".format(k, self.get_bit(n).is_set)
                 for n, k in enumerate(self._keys)
             ),
         )
@@ -200,26 +204,22 @@ class BitHandler(object):
         if key.startswith("_"):
             return object.__getattribute__(self, key)
         if key not in self._keys:
-            raise AttributeError("%s is not a valid flag" % key)
+            raise AttributeError("{0} is not a valid flag".format(key))
         return self.get_bit(self._keys.index(key))
 
     def __setattr__(self, key, value):
         if key.startswith("_"):
             return object.__setattr__(self, key, value)
         if key not in self._keys:
-            raise AttributeError("%s is not a valid flag" % key)
+            raise AttributeError("{0} is not a valid flag".format(key))
         self.set_bit(self._keys.index(key), value)
 
     def __iter__(self):
         return self.iteritems()
 
-    def __sentry__(self):
-        return repr(self)
-
-    def _get_mask(self):
+    @property
+    def mask(self):
         return self._value
-
-    mask = property(_get_mask)
 
     def evaluate(self, evaluator, qn, connection):
         return self.mask, []
@@ -246,8 +246,7 @@ class BitHandler(object):
         return list(self.iteritems())
 
     def iteritems(self):
-        for k in self._keys:
-            yield (k, getattr(self, k).is_set)
+        yield from ((key, getattr(self, key).is_set) for key in self._keys)
 
     def get_label(self, flag):
         if isinstance(flag, string_types):
@@ -256,23 +255,29 @@ class BitHandler(object):
             flag = flag.number
         return self._labels[flag]
 
+    def __sentry__(self):
+        return repr(self)
 
-try:
-    from django.db.backends.sqlite3.base import Database
 
-    Database.register_adapter(Bit, lambda x: int(x))
-    Database.register_adapter(BitHandler, lambda x: int(x))
-except ImproperlyConfigured:
-    pass
+def register_sqlite3_adapters():
+    with suppress(ImproperlyConfigured):
+        from django.db.backends.sqlite3.base import Database
 
-try:
-    from django.db.backends.postgresql.base import Database
+        Database.register_adapter(Bit, int)
+        Database.register_adapter(BitHandler, int)
 
-    Database.extensions.register_adapter(
-        Bit, lambda x: Database.extensions.AsIs(int(x))
-    )
-    Database.extensions.register_adapter(
-        BitHandler, lambda x: Database.extensions.AsIs(int(x))
-    )
-except ImproperlyConfigured:
-    pass
+
+def register_postgres_adapters():
+    with suppress(ImproperlyConfigured):
+        from django.db.backends.postgresql.base import Database
+
+        Database.extensions.register_adapter(
+            Bit, lambda x: Database.extensions.AsIs(int(x)),
+        )
+        Database.extensions.register_adapter(
+            BitHandler, lambda x: Database.extensions.AsIs(int(x)),
+        )
+
+
+register_sqlite3_adapters()
+register_postgres_adapters()

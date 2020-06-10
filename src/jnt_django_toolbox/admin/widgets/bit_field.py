@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.forms import CheckboxSelectMultiple
 from django.utils.encoding import force_text
 from jnt_django_toolbox.models.fields.bit_field.types import BitHandler
@@ -25,6 +27,6 @@ class BitFieldWidget(CheckboxSelectMultiple):
             data = []
         if initial != data:
             return True
-        initial_set = set([force_text(value) for value in initial])
-        data_set = set([force_text(value) for value in data])
+        initial_set = {force_text(value) for value in initial}
+        data_set = {force_text(value) for value in data}
         return data_set != initial_set

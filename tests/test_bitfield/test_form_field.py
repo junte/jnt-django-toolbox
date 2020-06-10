@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from tests.models import BitFieldTestModel
 from tests.test_bitfield.forms import BitFieldTestModelForm
 
