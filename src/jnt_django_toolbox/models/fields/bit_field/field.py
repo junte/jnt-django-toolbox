@@ -46,15 +46,6 @@ class BitFieldFlags:
     def itervalues(self):
         yield from (Bit(self._flags.index(flag)) for flag in self._flags)
 
-    def items(self):
-        return list(self.iteritems())
-
-    def keys(self):
-        return list(self.iterkeys())
-
-    def values(self):
-        return list(self.itervalues())
-
 
 class BitFieldCreator:
     """

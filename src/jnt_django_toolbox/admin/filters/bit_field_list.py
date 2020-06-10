@@ -4,7 +4,7 @@ import six
 
 from django.db.models import F
 from django.core.exceptions import ValidationError
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.contrib.admin import FieldListFilter
 from django.contrib.admin.options import IncorrectLookupParameters
 from jnt_django_toolbox.models.fields.bit_field.types import Bit
@@ -38,7 +38,7 @@ class BitFieldListFilter(FieldListFilter):
             "query_string": cl.get_query_string({}, [self.lookup_kwarg]),
             "display": _("All"),
         }
-        for number, flag in enumerate(self.flags):
+        for number, _flag in enumerate(self.flags):
             bit_mask = Bit(number).mask
             yield {
                 "selected": self.lookup_val == bit_mask,

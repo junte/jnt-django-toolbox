@@ -111,9 +111,6 @@ class Bit:
             value = value.mask
         return self.mask ^ value
 
-    def __sentry__(self):
-        return repr(self)
-
     def evaluate(self, evaluator, qn, connection):
         return self.mask, []
 
@@ -215,7 +212,7 @@ class BitHandler:
         self.set_bit(self._keys.index(key), value)
 
     def __iter__(self):
-        return self.iteritems()
+        return self.items()
 
     @property
     def mask(self):
@@ -243,9 +240,6 @@ class BitHandler:
         return iter(self._keys)
 
     def items(self):
-        return list(self.iteritems())
-
-    def iteritems(self):
         yield from ((key, getattr(self, key).is_set) for key in self._keys)
 
     def get_label(self, flag):
@@ -254,9 +248,6 @@ class BitHandler:
         if isinstance(flag, Bit):
             flag = flag.number
         return self._labels[flag]
-
-    def __sentry__(self):
-        return repr(self)
 
 
 def register_sqlite3_adapters():
