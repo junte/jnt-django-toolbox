@@ -1,3 +1,3 @@
 # -*- coding: utf-8 -*-
 
-from .bit_field import BitFieldFormField
+from .bit import BitFieldFormField

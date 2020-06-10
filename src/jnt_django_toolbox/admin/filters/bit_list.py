@@ -7,7 +7,7 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from django.contrib.admin import FieldListFilter
 from django.contrib.admin.options import IncorrectLookupParameters
-from jnt_django_toolbox.models.fields.bit_field.types import Bit
+from jnt_django_toolbox.models.fields.bit.types import Bit
 
 
 class BitFieldListFilter(FieldListFilter):

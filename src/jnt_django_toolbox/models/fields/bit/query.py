@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from contextlib import suppress
 
-from jnt_django_toolbox.models.fields.bit_field.types import Bit, BitHandler
+from jnt_django_toolbox.models.fields.bit.types import Bit, BitHandler
 
 
 class BitQueryLookupWrapper:

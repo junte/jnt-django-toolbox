@@ -1,3 +1,4 @@
 # -*- coding: utf-8 -*-
 
-from .bit_field import BitField
+from .bit import BitField
+from .enum import EnumField

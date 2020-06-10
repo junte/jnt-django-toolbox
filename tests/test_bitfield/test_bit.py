@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from jnt_django_toolbox.models.fields.bit_field.types import Bit
+from jnt_django_toolbox.models.fields.bit.types import Bit
 
 
 def test_int():

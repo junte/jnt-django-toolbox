@@ -4,10 +4,8 @@ from contextlib import suppress
 
 import six
 from django.db.models.fields import BigIntegerField, Field
-from jnt_django_toolbox.models.fields.bit_field.query import (
-    BitQueryLookupWrapper,
-)
-from jnt_django_toolbox.models.fields.bit_field.types import Bit, BitHandler
+from jnt_django_toolbox.models.fields.bit.query import BitQueryLookupWrapper
+from jnt_django_toolbox.models.fields.bit.types import Bit, BitHandler
 
 from jnt_django_toolbox.admin.fields import BitFieldFormField
 

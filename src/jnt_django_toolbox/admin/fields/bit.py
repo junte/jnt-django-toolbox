@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from django.forms import IntegerField, ValidationError
-from jnt_django_toolbox.admin.widgets.bit_field import BitFieldWidget
-from jnt_django_toolbox.models.fields.bit_field.types import BitHandler
+from jnt_django_toolbox.admin.widgets.bit import BitFieldWidget
+from jnt_django_toolbox.models.fields.bit.types import BitHandler
 
 
 class BitFieldFormField(IntegerField):

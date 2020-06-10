@@ -1,3 +1,3 @@
 # -*- coding: utf-8 -*-
 
-from .bit_field_list import BitFieldListFilter
+from .bit_list import BitFieldListFilter
