@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
 import six
-
-from django.db.models import F
-from django.core.exceptions import ValidationError
-from django.utils.translation import gettext_lazy as _
 from django.contrib.admin import FieldListFilter
 from django.contrib.admin.options import IncorrectLookupParameters
+from django.core.exceptions import ValidationError
+from django.db.models import F
+from django.utils.translation import gettext_lazy as _
+
 from jnt_django_toolbox.models.fields.bit.types import Bit
 
 

@@ -6,8 +6,8 @@ import pytest
 from django.db import connection, models
 from django.db.models import F
 from django.db.models.fields import BigIntegerField
-from jnt_django_toolbox.models.fields import BitField
 
+from jnt_django_toolbox.models.fields import BitField
 from tests.models import BitFieldTestModel
 
 

@@ -3,7 +3,6 @@
 import pickle
 
 from jnt_django_toolbox.models.fields.bit.types import BitHandler
-
 from tests.models import BitFieldTestModel
 
 

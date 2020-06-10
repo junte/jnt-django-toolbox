@@ -4,10 +4,10 @@ from contextlib import suppress
 
 import six
 from django.db.models.fields import BigIntegerField, Field
-from jnt_django_toolbox.models.fields.bit.query import BitQueryLookupWrapper
-from jnt_django_toolbox.models.fields.bit.types import Bit, BitHandler
 
 from jnt_django_toolbox.admin.fields import BitFieldFormField
+from jnt_django_toolbox.models.fields.bit.query import BitQueryLookupWrapper
+from jnt_django_toolbox.models.fields.bit.types import Bit, BitHandler
 
 # Count binary capacity. Truncate "0b" prefix from binary form.
 # Twice faster than bin(i)[2:] or math.floor(math.log(i))

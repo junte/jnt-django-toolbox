@@ -5,7 +5,6 @@ import sys
 
 from django.conf import settings
 
-
 sys.path.insert(0, os.path.dirname(__file__))
 
 
