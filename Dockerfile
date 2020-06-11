@@ -9,7 +9,7 @@ ENV PYTHONFAULTHANDLER=1 \
   PIPENV_COLORBLIND=true \
   PIPENV_NOSPIN=true \
   C_FORCE_ROOT=true \
-  POETRY_VERSION=1.0.0
+  POETRY_VERSION=1.0.9
 
 WORKDIR /app
 
@@ -21,7 +21,7 @@ RUN apt update \
     && curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/${POETRY_VERSION}/get-poetry.py | python \
     && export PATH="$PATH:$HOME/.poetry/bin" \
     && poetry config virtualenvs.create false \
-    && poetry install --no-interaction --no-ansi \
+    && poetry install --no-interaction --no-ansi --no-root \
     && apt autoremove -y
 
 COPY . .
