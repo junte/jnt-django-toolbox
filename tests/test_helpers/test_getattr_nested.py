@@ -1,14 +1,16 @@
+# -*- coding: utf-8 -*-
+
 import pytest
 
 from jnt_django_toolbox.helpers.objects import dict2obj, getattr_nested
 
 
 @pytest.mark.parametrize(
-    "field, expected", [("field_1", "test"), ("field_2__inner_field", 3)],
+    ("field", "expected"), [("field_1", "test"), ("field_2__inner_field", 3)],
 )
 def test_exists(field, expected):
     instance = dict2obj(
-        {"field_1": "test", "field_2": dict2obj({"inner_field": 3})}
+        {"field_1": "test", "field_2": dict2obj({"inner_field": 3})},
     )
 
     assert getattr_nested(instance, field) == expected

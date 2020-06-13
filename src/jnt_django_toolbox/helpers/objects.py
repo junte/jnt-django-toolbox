@@ -6,7 +6,6 @@ from typing import Dict
 
 def getattr_nested(instance, attr, *args):
     """Get object attribute."""
-
     try:
         return reduce(getattr, [instance] + attr.split("__"))
     except AttributeError:
