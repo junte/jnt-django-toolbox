@@ -25,3 +25,5 @@ RUN apt update \
     && apt autoremove -y
 
 COPY . .
+
+RUN poetry install --no-interaction --no-ansi
