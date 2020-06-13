@@ -31,7 +31,6 @@ quality:
   stage: test
   script:
     - cd /app
-    - export PATH="$PATH:$HOME/.poetry/bin"
     - make check_quality
 
 test:
