@@ -12,7 +12,7 @@ ENV PYTHONFAULTHANDLER=1 \
   PIPENV_NOSPIN=true \
   C_FORCE_ROOT=true \
   POETRY_VERSION=1.0.9 \
-  PATH="${HOME}/.poetry/bin:${PATH}"
+  PATH="/root/.poetry/bin:${PATH}"
 
 WORKDIR /app
 
@@ -22,9 +22,6 @@ RUN apt update \
     && apt install -y make \
                       curl \
     && curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/${POETRY_VERSION}/get-poetry.py | python \
-    && echo "${HOME}/.poetry/bin:${PATH}" \
-    && echo ${HOME} \
-    && echo ${PATH} \
     && poetry config virtualenvs.create false \
     && poetry install --no-interaction --no-ansi --no-root \
     && apt autoremove -y
