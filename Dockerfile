@@ -21,9 +21,7 @@ RUN apt update \
     && curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/${POETRY_VERSION}/get-poetry.py | python \
     && export PATH="$PATH:$HOME/.poetry/bin" \
     && poetry config virtualenvs.create false \
-    && poetry install --no-interaction --no-ansi --no-root \
+    && poetry install --no-interaction --no-ansi \
     && apt autoremove -y
 
 COPY . .
-
-RUN poetry install --no-interaction --no-ansi
