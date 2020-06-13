@@ -20,6 +20,7 @@ RUN apt update \
     && apt install -y make \
                       curl \
     && curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/${POETRY_VERSION}/get-poetry.py | python \
+    && echo ${PATH}
     && poetry config virtualenvs.create false \
     && poetry install --no-interaction --no-ansi --no-root \
     && apt autoremove -y
