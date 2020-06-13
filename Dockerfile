@@ -1,5 +1,7 @@
 FROM python:3.8-slim as base
 
+USER root
+
 ENV PYTHONFAULTHANDLER=1 \
   PYTHONUNBUFFERED=1 \
   PYTHONHASHSEED=random \
