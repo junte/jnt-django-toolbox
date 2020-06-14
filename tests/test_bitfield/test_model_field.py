@@ -156,7 +156,7 @@ def test_binary_capacity(db):
 
     BitField(flags=flags[:MAX_COUNT])
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="Too many flags"):
         BitField(flags=flags[: (MAX_COUNT + 1)])
 
 
@@ -187,13 +187,13 @@ def test_dictionary_init(db):
         "tenth",
     ]
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="Wrong keys or empty dictionary"):
         BitField(flags={})
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="Wrong keys or empty dictionary"):
         BitField(flags={"wrongkey": "wrongkey"})
 
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match="Wrong keys or empty dictionary"):
         BitField(flags={"1": "non_int_key"})
 
 

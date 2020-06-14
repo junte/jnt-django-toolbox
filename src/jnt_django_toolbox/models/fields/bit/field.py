@@ -48,6 +48,7 @@ class BitFieldFlags:
 class BitFieldCreator:
     """
     A placeholder class that provides a way to set the attribute on the model.
+
     Descriptor for BitFields.  Checks to make sure that all flags of the
     instance match the class.  This is to handle the case when caching
     an older version of the instance and a newer version of the class is
@@ -57,13 +58,13 @@ class BitFieldCreator:
     def __init__(self, field):
         self.field = field
 
-    def __set__(self, obj, value):
-        obj.__dict__[self.field.name] = self.field.to_python(value)
+    def __set__(self, instance, value):
+        instance.__dict__[self.field.name] = self.field.to_python(value)
 
-    def __get__(self, obj, type=None):
-        if obj is None:
+    def __get__(self, instance, type=None):
+        if instance is None:
             return BitFieldFlags(self.field.flags)
-        retval = obj.__dict__[self.field.name]
+        retval = instance.__dict__[self.field.name]
         if self.field.__class__ is BitField:
             # Update flags from class in case they've changed.
             retval._keys = self.field.flags
@@ -74,11 +75,12 @@ class BitField(BigIntegerField):
     def __init__(self, flags, default=None, *args, **kwargs):
         if isinstance(flags, dict):
             # Get only integer keys in correct range
-            valid_keys = (
-                k
-                for k in flags.keys()
-                if isinstance(k, int) and (0 <= k < MAX_FLAG_COUNT)
-            )
+            valid_keys = [
+                flag_key
+                for flag_key in flags.keys()
+                if isinstance(flag_key, int)
+                and (0 <= flag_key < MAX_FLAG_COUNT)
+            ]
             if not valid_keys:
                 raise ValueError("Wrong keys or empty dictionary")
             # Fill list with values from dict or with empty values
@@ -124,11 +126,6 @@ class BitField(BigIntegerField):
         if isinstance(value, (BitHandler, Bit)):
             value = value.mask
         return int(value)
-
-    # def get_db_prep_save(self, value, connection):
-    #     if isinstance(value, Bit):
-    #         return BitQuerySaveWrapper(self.model._meta.db_table, self.name, value)
-    #     return super(BitField, self).get_db_prep_save(value, connection=connection)
 
     def get_db_prep_lookup(
         self, lookup_type, value, connection, prepared=False,

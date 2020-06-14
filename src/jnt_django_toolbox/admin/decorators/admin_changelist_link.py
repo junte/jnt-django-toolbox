@@ -12,8 +12,7 @@ from jnt_django_toolbox.helpers.objects import getattr_nested
 def admin_changelist_link(
     attr, short_description=None, empty_description="-", query_string=None,
 ):
-    """Decorator used for rendering a link to the list display of
-    a related model in the admin changelist page.
+    """Render a link to the list of a related model in the admin changelist.
 
     ``attr (str)``
         Name of the related field.
@@ -42,7 +41,10 @@ def admin_changelist_link(
             fields = ('name', 'foos', 'custom_field')
             readonly_fields = ('foos', 'custom_field')
 
-            @admin_changelist_link('foos', query_string=lambda bar: f'bar_id={bar.pk}')
+            @admin_changelist_link(
+                'foos',
+                query_string=lambda bar: 'bar_id={0}'.format(bar.pk)
+            )
             def foos(self, foos):
                 return ', '.join(str(foo) for foo in foos.all())
 

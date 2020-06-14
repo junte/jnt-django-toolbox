@@ -4,8 +4,7 @@ from functools import wraps
 
 
 def admin_field(short_description=None, allow_tags=True):
-    """Decorator used for custom field or add link in
-    the admin detail page.
+    """Render custom field or add link in the admin detail page.
 
     ``short_description (str)``
         Description of the field.

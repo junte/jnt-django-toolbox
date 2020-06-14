@@ -10,8 +10,7 @@ from jnt_django_toolbox.helpers.objects import getattr_nested
 
 
 def admin_link(attr, short_description=None, empty_description="-"):
-    """Decorator used for rendering a link to a related model in
-    the admin detail page.
+    """Render a link to a related model in the admin detail page.
 
     ``attr (str)``
         Name of the related field.

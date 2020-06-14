@@ -12,10 +12,10 @@ class BitQueryLookupWrapper:
 
     def as_sql(self, qn, connection=None):
         """
-        Create the proper SQL fragment. This inserts something like
-        "(T0.flags & value) != 0".
+        Create the proper SQL fragment.
 
-        This will be called by Where.as_sql()
+        This inserts something like "(T0.flags & value) != 0". This will be
+        called by Where.as_sql()
         """
         if self.bit:
             return (
@@ -54,10 +54,10 @@ with suppress(ImportError):
 class BitQuerySaveWrapper(BitQueryLookupWrapper):
     def as_sql(self, qn, connection):
         """
-        Create the proper SQL fragment. This inserts something like
-        "(T0.flags & value) != 0".
+        Create the proper SQL fragment.
 
-        This will be called by Where.as_sql()
+        This inserts something like "(T0.flags & value) != 0". This will be
+        called by Where.as_sql()
         """
         engine = connection.settings_dict["ENGINE"].rsplit(".", -1)[-1]
         if engine.startswith("postgres"):
