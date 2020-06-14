@@ -1,35 +1,36 @@
 # -*- coding: utf-8 -*-
 
+import pytest
+
 from tests.models import BitFieldTestModel
 from tests.test_bitfield.forms import BitFieldTestModelForm
 
 
-def test_form_new_invalid(db):
-    invalid_data_dicts = [
+@pytest.mark.parametrize(
+    "invalid_data",
+    [
         {"flags": ["FLAG1", "FLAG_FLAG"]},
-        {"flags": ["FLAG4"]},
+        {"flags": ["FLAG_4"]},
         {"flags": [1, 2]},
-    ]
-    for invalid_data in invalid_data_dicts:
-        form = BitFieldTestModelForm(data=invalid_data)
-        assert not form.is_valid()
+    ],
+)
+def test_form_new_invalid(db, invalid_data):
+    form = BitFieldTestModelForm(data=invalid_data)
+    assert not form.is_valid()
 
 
-def test_form_new(db):
-    data_dicts = [
-        {"flags": ["FLAG1", "FLAG2"]},
-        {"flags": ["FLAG4"]},
-        {"flags": []},
-        {},
-    ]
-    for data in data_dicts:
-        form = BitFieldTestModelForm(data=data)
-        assert form.is_valid()
+@pytest.mark.parametrize(
+    "data",
+    [{"flags": ["FLAG1", "FLAG2"]}, {"flags": ["FLAG4"]}, {"flags": []}, {}],
+)
+def test_form_new(db, data):
+    form = BitFieldTestModelForm(data=data)
+    assert form.is_valid()
 
-        instance = form.save()
-        flags = data["flags"] if "flags" in data else []
-        for k in BitFieldTestModel.flags:
-            assert bool(getattr(instance.flags, k)) == (k in flags)
+    instance = form.save()
+    flags = data["flags"] if "flags" in data else []
+    for k in BitFieldTestModel.flags:
+        assert bool(getattr(instance.flags, k)) == (k in flags)
 
 
 def test_form_update(db):
