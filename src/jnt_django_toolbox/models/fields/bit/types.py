@@ -23,6 +23,12 @@ class Bit:
         if not self.is_set:
             self.mask = ~self.mask
 
+    def evaluate(self, evaluator, qn, connection):
+        return self.mask, []
+
+    def prepare(self, evaluator, query, allow_joins):
+        return evaluator.prepare_node(self, query, allow_joins)
+
     def __repr__(self):
         return "<%s: number=%d, is_set=%s>" % (
             self.__class__.__name__,
@@ -30,18 +36,11 @@ class Bit:
             self.is_set,
         )
 
-    # def __str__(self):
-    #     if self.is_set:
-    #         return 'Yes'
-    #     return 'No'
-
     def __int__(self):
         return self.mask
 
     def __bool__(self):
         return self.is_set
-
-    __nonzero__ = __bool__
 
     def __eq__(self, value):
         if isinstance(value, Bit):
@@ -111,12 +110,6 @@ class Bit:
             value = value.mask
         return self.mask ^ value
 
-    def evaluate(self, evaluator, qn, connection):
-        return self.mask, []
-
-    def prepare(self, evaluator, query, allow_joins):
-        return evaluator.prepare_node(self, query, allow_joins)
-
 
 class BitHandler:
     """
@@ -131,6 +124,44 @@ class BitHandler:
             self._value = 0
         self._keys = keys
         self._labels = labels is not None and labels or keys
+
+    def __str__(self):
+        return str(self._value)
+
+    @property
+    def mask(self):
+        return self._value
+
+    def evaluate(self, evaluator, qn, connection):
+        return self.mask, []
+
+    def get_bit(self, bit_number):
+        mask = 2 ** int(bit_number)
+        return Bit(bit_number, self._value & mask != 0)
+
+    def set_bit(self, bit_number, true_or_false):
+        mask = 2 ** int(bit_number)
+        if true_or_false:
+            self._value |= mask
+        else:
+            self._value &= ~mask
+        return Bit(bit_number, self._value & mask != 0)
+
+    def keys(self):
+        return self._keys
+
+    def iterkeys(self):
+        return iter(self._keys)
+
+    def items(self):
+        yield from ((key, getattr(self, key).is_set) for key in self._keys)
+
+    def get_label(self, flag):
+        if isinstance(flag, string_types):
+            flag = self._keys.index(flag)
+        if isinstance(flag, Bit):
+            flag = flag.number
+        return self._labels[flag]
 
     def __eq__(self, other):
         if not isinstance(other, BitHandler):
@@ -161,16 +192,11 @@ class BitHandler:
             ),
         )
 
-    def __str__(self):
-        return str(self._value)
-
     def __int__(self):
         return self._value
 
     def __bool__(self):
         return bool(self._value)
-
-    __nonzero__ = __bool__
 
     def __and__(self, value):
         return BitHandler(self._value & int(value), self._keys)
@@ -213,41 +239,6 @@ class BitHandler:
 
     def __iter__(self):
         return self.items()
-
-    @property
-    def mask(self):
-        return self._value
-
-    def evaluate(self, evaluator, qn, connection):
-        return self.mask, []
-
-    def get_bit(self, bit_number):
-        mask = 2 ** int(bit_number)
-        return Bit(bit_number, self._value & mask != 0)
-
-    def set_bit(self, bit_number, true_or_false):
-        mask = 2 ** int(bit_number)
-        if true_or_false:
-            self._value |= mask
-        else:
-            self._value &= ~mask
-        return Bit(bit_number, self._value & mask != 0)
-
-    def keys(self):
-        return self._keys
-
-    def iterkeys(self):
-        return iter(self._keys)
-
-    def items(self):
-        yield from ((key, getattr(self, key).is_set) for key in self._keys)
-
-    def get_label(self, flag):
-        if isinstance(flag, string_types):
-            flag = self._keys.index(flag)
-        if isinstance(flag, Bit):
-            flag = flag.number
-        return self._labels[flag]
 
 
 def register_sqlite3_adapters():

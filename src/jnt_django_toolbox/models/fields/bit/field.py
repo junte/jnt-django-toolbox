@@ -21,18 +21,6 @@ class BitFieldFlags:
 
         self._flags = flags
 
-    def __repr__(self):
-        return repr(self._flags)
-
-    def __iter__(self):
-        yield from self._flags
-
-    def __getattr__(self, key):
-        if key not in self._flags:
-            raise AttributeError("flag {0} is not registered".format(key))
-
-        return Bit(self._flags.index(key))
-
     def iteritems(self):
         yield from (
             (flag, Bit(self._flags.index(flag))) for flag in self._flags
@@ -43,6 +31,18 @@ class BitFieldFlags:
 
     def itervalues(self):
         yield from (Bit(self._flags.index(flag)) for flag in self._flags)
+
+    def __getattr__(self, key):
+        if key not in self._flags:
+            raise AttributeError("flag {0} is not registered".format(key))
+
+        return Bit(self._flags.index(key))
+
+    def __repr__(self):
+        return repr(self._flags)
+
+    def __iter__(self):
+        yield from self._flags
 
 
 class BitFieldCreator:
