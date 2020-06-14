@@ -6,8 +6,8 @@ from tests.test_bitfield.forms import BitFieldTestModelForm
 
 def test_form_new_invalid(db):
     invalid_data_dicts = [
-        {"flags": ["FLAG_0", "FLAG_FLAG"]},
-        {"flags": ["FLAG_4"]},
+        {"flags": ["FLAG1", "FLAG_FLAG"]},
+        {"flags": ["FLAG4"]},
         {"flags": [1, 2]},
     ]
     for invalid_data in invalid_data_dicts:
@@ -17,8 +17,8 @@ def test_form_new_invalid(db):
 
 def test_form_new(db):
     data_dicts = [
-        {"flags": ["FLAG_0", "FLAG_1"]},
-        {"flags": ["FLAG_3"]},
+        {"flags": ["FLAG1", "FLAG2"]},
+        {"flags": ["FLAG4"]},
         {"flags": []},
         {},
     ]
@@ -37,14 +37,14 @@ def test_form_update(db):
     for k in BitFieldTestModel.flags:
         assert not bool(getattr(instance.flags, k))
 
-    data = {"flags": ["FLAG_0", "FLAG_1"]}
+    data = {"flags": ["FLAG1", "FLAG2"]}
     form = BitFieldTestModelForm(data=data, instance=instance)
     assert form.is_valid()
     instance = form.save()
     for k in BitFieldTestModel.flags:
         assert bool(getattr(instance.flags, k)) == (k in data["flags"])
 
-    data = {"flags": ["FLAG_2", "FLAG_3"]}
+    data = {"flags": ["FLAG3", "FLAG4"]}
     form = BitFieldTestModelForm(data=data, instance=instance)
     assert form.is_valid()
     instance = form.save()

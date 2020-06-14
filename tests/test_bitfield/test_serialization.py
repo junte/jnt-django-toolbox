@@ -8,12 +8,12 @@ from tests.models import BitFieldTestModel
 
 def test_can_unserialize_bithandler():
     bf = BitFieldTestModel()
-    bf.flags.FLAG_0 = 1
-    bf.flags.FLAG_1 = 0
+    bf.flags.FLAG1 = 1
+    bf.flags.FLAG2 = 0
     data = pickle.dumps(bf)
     inst = pickle.loads(data)
-    assert inst.flags.FLAG_0
-    assert not inst.flags.FLAG_1
+    assert inst.flags.FLAG1
+    assert not inst.flags.FLAG2
 
 
 def test_pickle_integration(db):
@@ -26,9 +26,9 @@ def test_pickle_integration(db):
 
 def test_added_field():
     bf = BitFieldTestModel()
-    bf.flags.FLAG_0 = 1
-    bf.flags.FLAG_1 = 0
-    bf.flags.FLAG_3 = 0
+    bf.flags.FLAG1 = 1
+    bf.flags.FLAG2 = 0
+    bf.flags.FLAG4 = 0
     data = pickle.dumps(bf)
     inst = pickle.loads(data)
-    assert "FLAG_3" in inst.flags.keys()
+    assert "FLAG4" in inst.flags.keys()

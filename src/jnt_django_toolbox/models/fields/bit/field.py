@@ -109,7 +109,7 @@ class BitField(BigIntegerField):
         self.flags = flags
         self.labels = labels
 
-    def contribute_to_class(self, cls, name, **kwargs):
+    def contribute_to_class(self, cls, name, **kwargs):  # noqa: WPS117
         super().contribute_to_class(cls, name, **kwargs)
         setattr(cls, self.name, BitFieldCreator(self))
 
