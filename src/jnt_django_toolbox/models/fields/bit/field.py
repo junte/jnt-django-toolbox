@@ -32,6 +32,15 @@ class BitFieldFlags:
     def itervalues(self):
         yield from (Bit(self._flags.index(flag)) for flag in self._flags)
 
+    def items(self):
+        return list(self.iteritems())  # noqa: B301
+
+    def keys(self):
+        return list(self.iterkeys())  # noqa: B301
+
+    def values(self):
+        return list(self.itervalues())  # noqa: B301
+
     def __getattr__(self, key):
         if key not in self._flags:
             raise AttributeError("flag {0} is not registered".format(key))
