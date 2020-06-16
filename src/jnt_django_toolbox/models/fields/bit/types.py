@@ -235,7 +235,7 @@ class BitHandler:
         self.set_bit(self._keys.index(key), value)
 
     def __iter__(self):
-        return self.items()
+        yield from self.items()
 
 
 def register_sqlite3_adapters():
