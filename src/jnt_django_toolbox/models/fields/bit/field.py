@@ -22,15 +22,13 @@ class BitFieldFlags:
         self._flags = flags
 
     def items(self):
-        yield from (
-            (flag, Bit(self._flags.index(flag))) for flag in self._flags
-        )
+        return [(flag, Bit(self._flags.index(flag))) for flag in self._flags]
 
     def keys(self):
-        yield from self._flags
+        return self._flags
 
     def values(self):
-        yield from (Bit(self._flags.index(flag)) for flag in self._flags)
+        return [Bit(self._flags.index(flag)) for flag in self._flags]
 
     def __getattr__(self, key):
         if key not in self._flags:

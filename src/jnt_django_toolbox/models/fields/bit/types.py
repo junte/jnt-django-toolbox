@@ -148,10 +148,10 @@ class BitHandler:
         return Bit(bit_number, self._value & mask != 0)
 
     def keys(self):
-        yield from self._keys
+        return self._keys
 
     def items(self):
-        yield from ((key, getattr(self, key).is_set) for key in self._keys)
+        return [(key, getattr(self, key).is_set) for key in self._keys]
 
     def get_label(self, flag):
         if isinstance(flag, string_types):
