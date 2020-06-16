@@ -21,25 +21,16 @@ class BitFieldFlags:
 
         self._flags = flags
 
-    def iteritems(self):
+    def items(self):
         yield from (
             (flag, Bit(self._flags.index(flag))) for flag in self._flags
         )
 
-    def iterkeys(self):
+    def keys(self):
         yield from self._flags
 
-    def itervalues(self):
-        yield from (Bit(self._flags.index(flag)) for flag in self._flags)
-
-    def items(self):
-        return list(self.iteritems())  # noqa: B301
-
-    def keys(self):
-        return list(self.iterkeys())  # noqa: B301
-
     def values(self):
-        return list(self.itervalues())  # noqa: B301
+        yield from (Bit(self._flags.index(flag)) for flag in self._flags)
 
     def __getattr__(self, key):
         if key not in self._flags:

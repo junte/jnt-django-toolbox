@@ -148,10 +148,7 @@ class BitHandler:
         return Bit(bit_number, self._value & mask != 0)
 
     def keys(self):
-        return self._keys
-
-    def iterkeys(self):
-        return iter(self._keys)
+        yield from self._keys
 
     def items(self):
         yield from ((key, getattr(self, key).is_set) for key in self._keys)
