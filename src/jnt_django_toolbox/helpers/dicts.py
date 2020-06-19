@@ -1,6 +1,13 @@
 # -*- coding: utf-8 -*-
 
+import collections
+
 not_provided = object()
+
+
+def recursive_dict():
+    """Default dict of default dicts with unlimited nesting."""
+    return collections.defaultdict(recursive_dict)
 
 
 def deep_get(dic, path, default=not_provided):

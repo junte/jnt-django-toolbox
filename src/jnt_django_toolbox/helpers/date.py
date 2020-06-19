@@ -4,10 +4,9 @@ from datetime import date, datetime, timedelta
 from math import ceil
 from typing import Union
 
-Number = Union[int, float]
+from jnt_django_toolbox.consts.time import SECONDS_PER_HOUR, SECONDS_PER_MINUTE
 
-SECONDS_IN_MINUTE = 60
-SECONDS_IN_HOUR = SECONDS_IN_MINUTE * 60
+Number = Union[int, float]
 
 
 def date2datetime(value: date) -> datetime:  # noqa: WPS110
@@ -25,8 +24,8 @@ def humanize_time(total_seconds: Number) -> str:
     if not isinstance(total_seconds, (int, float)):
         raise ValueError("Seconds should be a number")
 
-    hours, seconds = divmod(ceil(total_seconds), SECONDS_IN_HOUR)
-    minutes, seconds = divmod(seconds, SECONDS_IN_MINUTE)
+    hours, seconds = divmod(ceil(total_seconds), SECONDS_PER_HOUR)
+    minutes, seconds = divmod(seconds, SECONDS_PER_MINUTE)
 
     time_parts = [minutes, seconds]
     if hours:
