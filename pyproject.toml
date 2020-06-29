@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "jnt-django-toolbox"
-version = "0.1.6"
+version = "0.1.7"
 description = ""
 authors = ["Junte <tech@junte.ru>"]
 classifiers=[
@@ -22,7 +22,7 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.8"
-django = ">=3"
+django = ">=2"
 
 [tool.poetry.dev-dependencies]
 mypy = "*"
