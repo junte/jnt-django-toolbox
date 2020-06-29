@@ -7,6 +7,8 @@ from jnt_django_toolbox.models.fields.bit.types import BitHandler
 
 
 class BitFieldWidget(CheckboxSelectMultiple):
+    """Widget for bit field."""
+
     def render(self, name, value, attrs=None, choices=(), renderer=None):
         if isinstance(value, BitHandler):
             value = [k for k, v in value if v]

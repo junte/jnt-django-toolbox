@@ -6,6 +6,8 @@ from jnt_django_toolbox.models.fields.bit.types import Bit, BitHandler
 
 
 class BitQueryLookupWrapper:
+    """Bit query lookup wrapper."""
+
     def __init__(self, alias, column, bit):
         """Initializing."""
         self.table_alias = alias
@@ -54,6 +56,8 @@ with suppress(ImportError):
 
 
 class BitQuerySaveWrapper(BitQueryLookupWrapper):
+    """Bit query save wrapper."""
+
     def as_sql(self, qn, connection):
         """
         Create the proper SQL fragment.

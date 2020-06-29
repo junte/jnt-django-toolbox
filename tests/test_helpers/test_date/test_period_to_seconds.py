@@ -33,9 +33,11 @@ from jnt_django_toolbox.helpers.date import period_to_seconds
     ],
 )
 def test_period_to_seconds(period, seconds):
+    """Test success."""
     assert period_to_seconds(period) == seconds
 
 
 def test_not_valid_period_to_seconds():
+    """Test invalid."""
     with pytest.raises(ValueError, match="Not an ISO 8601 Duration string"):
         period_to_seconds("T2M")

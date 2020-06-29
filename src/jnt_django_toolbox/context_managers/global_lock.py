@@ -8,10 +8,14 @@ from django.core.cache import cache
 LOCK_EXPIRE = 60 * 10  # Lock expires in 10 minutes
 
 
-# source code:
-# http://docs.celeryproject.org/en/latest/tutorials/task-cookbook.html
 @contextmanager
 def global_lock(lock_id, value=1, expire=LOCK_EXPIRE):
+    """
+    Global lock mechanizm.
+
+    Idea from
+    http://docs.celeryproject.org/en/latest/tutorials/task-cookbook.html
+    """
     timeout_at = monotonic() + expire - 3
     lock_key = build_global_cache_key(lock_id)
     # cache.add fails if the key already exists
@@ -29,4 +33,5 @@ def global_lock(lock_id, value=1, expire=LOCK_EXPIRE):
 
 
 def build_global_cache_key(lock_id):
+    """Function for build global lock key."""
     return "____{0}____".format(lock_id)

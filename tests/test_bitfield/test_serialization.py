@@ -7,6 +7,7 @@ from tests.models import BitFieldTestModel
 
 
 def test_can_unserialize_bithandler():
+    """Test success."""
     bf = BitFieldTestModel()
     bf.flags.FLAG1 = 1
     bf.flags.FLAG2 = 0
@@ -17,6 +18,7 @@ def test_can_unserialize_bithandler():
 
 
 def test_pickle_integration(db):
+    """Test pickle."""
     inst = BitFieldTestModel.objects.create(flags=1)
     data = pickle.dumps(inst)
     inst = pickle.loads(data)
@@ -25,6 +27,7 @@ def test_pickle_integration(db):
 
 
 def test_added_field():
+    """Test add field."""
     bf = BitFieldTestModel()
     bf.flags.FLAG1 = 1
     bf.flags.FLAG2 = 0

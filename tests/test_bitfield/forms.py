@@ -6,6 +6,8 @@ from tests.models import BitFieldTestModel
 
 
 class BitFieldTestModelForm(forms.ModelForm):
+    """Form for testing bitfield."""
+
     class Meta:
         model = BitFieldTestModel
         exclude = ()

@@ -6,6 +6,7 @@ from jnt_django_toolbox.models.fields.bit.types import BitHandler
 
 
 def test_comparison():
+    """Test comparison."""
     bithandler1 = BitHandler(0, ("FLAG1", "FLAG2", "FLAG3", "FLAG4"))
     bithandler2 = BitHandler(1, ("FLAG1", "FLAG2", "FLAG3", "FLAG4"))
     bithandler3 = BitHandler(0, ("FLAG1", "FLAG2", "FLAG3", "FLAG4"))
@@ -15,6 +16,7 @@ def test_comparison():
 
 
 def test_defaults():
+    """Test defaults."""
     bithandler = BitHandler(0, ("FLAG1", "FLAG2", "FLAG3", "FLAG4"))
 
     assert int(bithandler) == 0
@@ -34,6 +36,7 @@ def test_defaults():
 
 
 def test_nonzero_default():
+    """Test non zero defaults."""
     bithandler = BitHandler(1, ("FLAG1", "FLAG2", "FLAG3", "FLAG4"))
     assert bool(bithandler.FLAG1)
     assert not bool(bithandler.FLAG2)
@@ -60,6 +63,7 @@ def test_nonzero_default():
 
 
 def test_mutation():
+    """Test mutation."""
     bithandler = BitHandler(0, ("FLAG1", "FLAG2", "FLAG3", "FLAG4"))
     assert not bool(bithandler.FLAG1)
     assert not bool(bithandler.FLAG2)

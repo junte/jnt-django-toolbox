@@ -26,6 +26,7 @@ def begin_of_week(value: date) -> date:  # noqa: WPS110
 
 
 def humanize_time(total_seconds: Number) -> str:
+    """Provides human friendly representation for seconds."""
     if not isinstance(total_seconds, (int, float)):
         raise ValueError("Seconds should be a number")
 
@@ -55,6 +56,7 @@ def humanize_time(total_seconds: Number) -> str:
 
 
 def period_to_seconds(value):
+    """Convert period string to seconds."""
     # https://en.wikipedia.org/wiki/ISO_8601#Durations
     # P[n]Y[n]M[n]DT[n]H[n]M[n]S
 

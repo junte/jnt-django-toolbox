@@ -15,6 +15,7 @@ from tests.test_bitfield.forms import BitFieldTestModelForm
     ],
 )
 def test_form_new_invalid(db, invalid_data):
+    """Test creating via invalid form."""
     form = BitFieldTestModelForm(data=invalid_data)
     assert not form.is_valid()
 
@@ -24,6 +25,7 @@ def test_form_new_invalid(db, invalid_data):
     [{"flags": ["FLAG1", "FLAG2"]}, {"flags": ["FLAG4"]}, {"flags": []}, {}],
 )
 def test_form_new(db, data):
+    """Test create with valid form."""
     form = BitFieldTestModelForm(data=data)
     assert form.is_valid()
 
@@ -34,6 +36,7 @@ def test_form_new(db, data):
 
 
 def test_form_update(db):
+    """Test update with form."""
     instance = BitFieldTestModel.objects.create(flags=0)
     for k in BitFieldTestModel.flags:
         assert not bool(getattr(instance.flags, k))

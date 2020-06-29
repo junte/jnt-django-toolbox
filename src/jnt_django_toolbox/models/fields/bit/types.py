@@ -7,6 +7,7 @@ from six import string_types
 
 
 def cmp(a, b):
+    """Comparison predicat."""
     return (a > b) - (a < b)
 
 
@@ -23,9 +24,11 @@ class Bit:
             self.mask = ~self.mask
 
     def evaluate(self, evaluator, qn, connection):
+        """Evaluate."""
         return self.mask, []
 
     def prepare(self, evaluator, query, allow_joins):
+        """Prepare."""
         return evaluator.prepare_node(self, query, allow_joins)
 
     def __repr__(self):
@@ -126,16 +129,20 @@ class BitHandler:
 
     @property
     def mask(self):
+        """Mask."""
         return self._value
 
     def evaluate(self, evaluator, qn, connection):
+        """Evaluate."""
         return self.mask, []
 
     def get_bit(self, bit_number):
+        """Get bit by position."""
         mask = 2 ** int(bit_number)
         return Bit(bit_number, self._value & mask != 0)
 
     def set_bit(self, bit_number, true_or_false):
+        """Set bit in position."""
         mask = 2 ** int(bit_number)
         if true_or_false:
             self._value |= mask
@@ -144,12 +151,15 @@ class BitHandler:
         return Bit(bit_number, self._value & mask != 0)
 
     def keys(self):
+        """Keys."""
         return self._keys
 
     def items(self):
+        """Items."""
         return [(key, getattr(self, key).is_set) for key in self._keys]
 
     def get_label(self, flag):
+        """Get flag label."""
         if isinstance(flag, string_types):
             flag = self._keys.index(flag)
         if isinstance(flag, Bit):
@@ -235,6 +245,7 @@ class BitHandler:
 
 
 def register_sqlite3_adapters():
+    """Register adapters for sqlite."""
     with suppress(ImproperlyConfigured):
         from django.db.backends.sqlite3.base import Database
 
@@ -243,6 +254,7 @@ def register_sqlite3_adapters():
 
 
 def register_postgres_adapters():
+    """Register adapters for postgres."""
     with suppress(ImproperlyConfigured):
         from django.db.backends.postgresql.base import Database
 

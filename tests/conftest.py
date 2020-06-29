@@ -4,6 +4,7 @@ from django.conf import settings
 
 
 def pytest_configure(config):
+    """Build test app settings."""
     settings.configure(
         DATABASES={
             "default": {

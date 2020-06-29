@@ -32,10 +32,13 @@ class _ExecuteContext:
 
 @pytest.fixture()
 def context():
+    """Execution context."""
     return _ExecuteContext()
 
 
 def test_simple(context):
+    """Test single execution."""
+
     def demo():  # noqa: WPS430
         with global_lock("test_lock") as acquired:
             context.acquired = acquired
@@ -46,6 +49,8 @@ def test_simple(context):
 
 
 def test_many_executes(context):
+    """Test many executes."""
+
     def demo():  # noqa: WPS430
         with global_lock("test_lock") as acquired:
             context.acquired = acquired
@@ -60,6 +65,8 @@ def test_many_executes(context):
 
 
 def test_with_exception(context):
+    """Test exception."""
+
     def demo():  # noqa: WPS430
         with global_lock("test_lock") as acquired:
             if acquired:
@@ -72,6 +79,8 @@ def test_with_exception(context):
 
 
 def test_already_runned(context):
+    """Test if already runned."""
+
     def demo():  # noqa: WPS430
         with global_lock("test_lock") as acquired:
             context.acquired = acquired
@@ -85,6 +94,8 @@ def test_already_runned(context):
 
 
 def test_already_runned_expired(context):
+    """Test expiration."""
+
     def demo():  # noqa: WPS430
         with global_lock("test_lock") as acquired:
             context.acquired = acquired

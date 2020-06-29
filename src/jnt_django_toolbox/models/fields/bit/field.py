@@ -15,6 +15,8 @@ MAX_FLAG_COUNT = int(len(bin(BigIntegerField.MAX_BIGINT)) - 2)
 
 
 class BitFieldFlags:
+    """Bit field flags wrapper."""
+
     def __init__(self, flags):
         """Initializing."""
         if len(flags) > MAX_FLAG_COUNT:
@@ -72,6 +74,8 @@ class BitFieldCreator:
 
 
 class BitField(BigIntegerField):
+    """Bit model field."""
+
     def __init__(self, flags, default=None, *args, **kwargs):
         """Initializing."""
         if isinstance(flags, dict):

@@ -11,6 +11,8 @@ from jnt_django_toolbox.models.fields.bit.types import Bit
 
 
 class BitFieldListFilter(FieldListFilter):
+    """List filter for bitfields."""
+
     def __init__(self, field, request, params, model, model_admin, field_path):
         """Initializing."""
         self.lookup_kwarg = field_path
