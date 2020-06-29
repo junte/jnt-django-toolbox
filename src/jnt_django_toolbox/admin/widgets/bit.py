@@ -10,6 +10,7 @@ class BitFieldWidget(CheckboxSelectMultiple):
     """Widget for bit field."""
 
     def render(self, name, value, attrs=None, choices=(), renderer=None):
+        """Render widget."""
         if isinstance(value, BitHandler):
             value = [k for k, v in value if v]
         elif isinstance(value, int):

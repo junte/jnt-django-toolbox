@@ -39,6 +39,7 @@ with suppress(ImportError):
 
     class BitQueryLookupWrapper(Exact):  # NOQA
         def process_lhs(self, qn, connection, lhs=None):
+            """Process left."""
             lhs_sql, params = super().process_lhs(qn, connection, lhs)
             if self.rhs:
                 lhs_sql = "{0} & %s".format(lhs_sql)
@@ -48,10 +49,12 @@ with suppress(ImportError):
             return lhs_sql, params
 
         def get_db_prep_lookup(self, value, connection, prepared=False):
+            """Get db prepared lookup."""
             v = value.mask if isinstance(value, (BitHandler, Bit)) else value
             return super().get_db_prep_lookup(v, connection)
 
         def get_prep_lookup(self):
+            """Get prepared lookup."""
             return self.rhs
 
 

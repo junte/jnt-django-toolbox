@@ -15,6 +15,7 @@ class Command(migrate.Command):
     """
 
     def handle(self, *args, **options):  # noqa: WPS110
+        """Command body."""
         with global_lock(MIGRATE_LOCK_NAME) as acquired:
             if acquired:
                 super().handle(*args, **options)

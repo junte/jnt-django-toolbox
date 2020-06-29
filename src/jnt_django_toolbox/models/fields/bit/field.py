@@ -25,12 +25,15 @@ class BitFieldFlags:
         self._flags = flags
 
     def items(self):
+        """Items."""
         return [(flag, Bit(self._flags.index(flag))) for flag in self._flags]
 
     def keys(self):
+        """Items."""
         return self._flags
 
     def values(self):
+        """Values."""
         return [Bit(self._flags.index(flag)) for flag in self._flags]
 
     def __getattr__(self, key):
@@ -115,17 +118,21 @@ class BitField(BigIntegerField):
         self.labels = labels
 
     def contribute_to_class(self, cls, name, **kwargs):  # noqa: WPS117
+        """Contribute to class."""
         super().contribute_to_class(cls, name, **kwargs)
         setattr(cls, self.name, BitFieldCreator(self))
 
     def formfield(self, form_class=BitFieldFormField, **kwargs):
+        """Get form field."""
         choices = [(k, self.labels[self.flags.index(k)]) for k in self.flags]
         return Field.formfield(self, form_class, choices=choices, **kwargs)
 
     def pre_save(self, instance, add):
+        """Before save."""
         return getattr(instance, self.attname)
 
     def get_prep_value(self, value):
+        """Get prepared value."""
         if value is None:
             return None
         if isinstance(value, (BitHandler, Bit)):
@@ -135,6 +142,7 @@ class BitField(BigIntegerField):
     def get_db_prep_lookup(
         self, lookup_type, value, connection, prepared=False,
     ):
+        """Get db prepared lookup."""
         if isinstance(getattr(value, "expression", None), Bit):
             value = value.expression
         if isinstance(value, (BitHandler, Bit)):
@@ -148,6 +156,7 @@ class BitField(BigIntegerField):
         )
 
     def get_prep_lookup(self, lookup_type, value):
+        """Get prepared lookup."""
         if isinstance(getattr(value, "expression", None), Bit):
             value = value.expression
         if isinstance(value, Bit):
@@ -161,6 +170,7 @@ class BitField(BigIntegerField):
         return BigIntegerField.get_prep_lookup(self, lookup_type, value)
 
     def to_python(self, value):
+        """Provide raw value."""
         if isinstance(value, Bit):
             value = value.mask
         if not isinstance(value, BitHandler):
@@ -180,6 +190,7 @@ class BitField(BigIntegerField):
         return value
 
     def deconstruct(self):
+        """Deconstruct."""
         name, path, args, kwargs = super().deconstruct()
         args.insert(0, self._arg_flags)
         return name, path, args, kwargs

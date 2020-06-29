@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import pickle
+import pickle  # noqa: S403
 
 from jnt_django_toolbox.models.fields.bit.types import BitHandler
 from tests.models import BitFieldTestModel

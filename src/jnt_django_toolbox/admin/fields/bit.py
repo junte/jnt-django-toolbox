@@ -24,6 +24,7 @@ class BitFieldFormField(IntegerField):
         self.widget.choices = choices
 
     def clean(self, value):
+        """Validate value."""
         if not value:
             return 0
 

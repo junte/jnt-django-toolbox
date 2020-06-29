@@ -4,7 +4,7 @@ import six
 from django.contrib.admin import FieldListFilter
 from django.contrib.admin.options import IncorrectLookupParameters
 from django.core.exceptions import ValidationError
-from django.db.models import F
+from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from jnt_django_toolbox.models.fields.bit.types import Bit
@@ -24,8 +24,10 @@ class BitFieldListFilter(FieldListFilter):
         )
 
     def queryset(self, request, queryset):
+        """Provides queryset."""
         filter = {
-            p: F(p).bitor(v) for p, v in six.iteritems(self.used_parameters)
+            param: models.F(param).bitor(value)
+            for param, value in six.iteritems(self.used_parameters)
         }
         try:
             return queryset.filter(**filter)
@@ -33,9 +35,11 @@ class BitFieldListFilter(FieldListFilter):
             raise IncorrectLookupParameters(e)
 
     def expected_parameters(self):
+        """Get expected parameters."""
         return [self.lookup_kwarg]
 
     def choices(self, cl):
+        """Get choices."""
         yield {
             "selected": self.lookup_val == 0,
             "query_string": cl.get_query_string({}, [self.lookup_kwarg]),

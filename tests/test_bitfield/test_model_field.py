@@ -4,7 +4,6 @@ import math
 
 import pytest
 from django.db import connection, models
-from django.db.models import F
 from django.db.models.fields import BigIntegerField
 
 from jnt_django_toolbox.models.fields import BitField
@@ -78,14 +77,13 @@ def test_update(db):
     assert not instance.flags.FLAG1
 
     BitFieldTestModel.objects.filter(pk=instance.pk).update(
-        # flags=bitor(F("flags"), BitFieldTestModel.flags.FLAG2),
-        flags=F("flags").bitor(BitFieldTestModel.flags.FLAG2),
+        flags=models.F("flags").bitor(BitFieldTestModel.flags.FLAG2),
     )
     instance = BitFieldTestModel.objects.get(pk=instance.pk)
     assert instance.flags.FLAG2
 
     BitFieldTestModel.objects.filter(pk=instance.pk).update(
-        flags=F("flags").bitor(
+        flags=models.F("flags").bitor(
             (~BitFieldTestModel.flags.FLAG1 | BitFieldTestModel.flags.FLAG4),
         ),
     )
@@ -98,7 +96,7 @@ def test_update(db):
     ).exists()
 
     BitFieldTestModel.objects.filter(pk=instance.pk).update(
-        flags=F("flags").bitand(~BitFieldTestModel.flags.FLAG4),
+        flags=models.F("flags").bitand(~BitFieldTestModel.flags.FLAG4),
     )
     instance = BitFieldTestModel.objects.get(pk=instance.pk)
     assert not instance.flags.FLAG1
@@ -114,7 +112,7 @@ def test_update_with_handler(db):
     instance.flags.FLAG2 = True
 
     BitFieldTestModel.objects.filter(pk=instance.pk).update(
-        flags=F("flags").bitor(instance.flags),
+        flags=models.F("flags").bitor(instance.flags),
     )
     instance = BitFieldTestModel.objects.get(pk=instance.pk)
     assert instance.flags.FLAG2
@@ -175,7 +173,7 @@ def test_dictionary_init(db):
         2: "second",
         "wrongkey": "wrongkey",
         100: "bigkey",
-        -100: "smallkey",
+        -15: "smallkey",
     }
 
     bf = BitField(flags)
