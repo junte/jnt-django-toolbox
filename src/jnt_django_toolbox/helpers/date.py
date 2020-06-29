@@ -4,6 +4,9 @@ import re
 from datetime import date, datetime, timedelta
 from typing import Union
 
+import dateparser
+from django.utils import timezone
+
 from jnt_django_toolbox.consts.time import (
     SECONDS_PER_DAY,
     SECONDS_PER_HOUR,
@@ -53,6 +56,19 @@ def humanize_time(total_seconds: Number) -> str:
             break
 
     return " ".join(items)
+
+
+epoch = datetime.utcfromtimestamp(0)
+
+
+def unix_time_seconds(dt):
+    """Get unix time from datetime."""
+    return (dt.replace(tzinfo=None) - epoch).total_seconds()
+
+
+def parse_human_date(date_str: str):
+    """Parse human presented date string."""
+    return timezone.make_aware(dateparser.parse(date_str))
 
 
 def period_to_seconds(value):
