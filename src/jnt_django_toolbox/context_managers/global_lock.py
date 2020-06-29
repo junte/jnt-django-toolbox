@@ -13,7 +13,7 @@ LOCK_EXPIRE = 60 * 10  # Lock expires in 10 minutes
 @contextmanager
 def global_lock(lock_id, value=1, expire=LOCK_EXPIRE):
     timeout_at = monotonic() + expire - 3
-    lock_key = _build_lock_cache_key(lock_id)
+    lock_key = build_global_cache_key(lock_id)
     # cache.add fails if the key already exists
     status = cache.add(lock_key, value, expire)
     try:  # noqa: WPS501
@@ -28,5 +28,5 @@ def global_lock(lock_id, value=1, expire=LOCK_EXPIRE):
             cache.delete(lock_key)
 
 
-def _build_lock_cache_key(lock_id):
+def build_global_cache_key(lock_id):
     return "____{0}____".format(lock_id)

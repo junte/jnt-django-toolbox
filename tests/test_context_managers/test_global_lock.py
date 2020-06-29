@@ -6,9 +6,9 @@ import pytest
 from django.core.cache import cache
 
 from jnt_django_toolbox.context_managers import global_lock
-from jnt_django_toolbox.context_managers.global_lock import (  # noqa: WPS450
+from jnt_django_toolbox.context_managers.global_lock import (
     LOCK_EXPIRE,
-    _build_lock_cache_key,
+    build_global_cache_key,
 )
 
 
@@ -42,7 +42,7 @@ def test_simple(context):
 
     demo()
     assert context.acquired
-    assert cache.get(_build_lock_cache_key("test_lock")) is None
+    assert cache.get(build_global_cache_key("test_lock")) is None
 
 
 def test_many_executes(context):
@@ -52,11 +52,11 @@ def test_many_executes(context):
 
     demo()
     assert context.acquired
-    assert cache.get(_build_lock_cache_key("test_lock")) is None
+    assert cache.get(build_global_cache_key("test_lock")) is None
 
     demo()
     assert context.acquired
-    assert cache.get(_build_lock_cache_key("test_lock")) is None
+    assert cache.get(build_global_cache_key("test_lock")) is None
 
 
 def test_with_exception(context):
@@ -68,7 +68,7 @@ def test_with_exception(context):
     with pytest.raises(Exception, match="test"):
         demo()
 
-    assert cache.get(_build_lock_cache_key("test_lock")) is None
+    assert cache.get(build_global_cache_key("test_lock")) is None
 
 
 def test_already_runned(context):
@@ -76,7 +76,7 @@ def test_already_runned(context):
         with global_lock("test_lock") as acquired:
             context.acquired = acquired
 
-    cache_key = _build_lock_cache_key("test_lock")
+    cache_key = build_global_cache_key("test_lock")
     cache.add(cache_key, 1, LOCK_EXPIRE)
 
     demo()
@@ -89,11 +89,11 @@ def test_already_runned_expired(context):
         with global_lock("test_lock") as acquired:
             context.acquired = acquired
 
-    cache.add(_build_lock_cache_key("test_lock"), 1, 1)
+    cache.add(build_global_cache_key("test_lock"), 1, 1)
 
     time.sleep(1)
 
     demo()
 
     assert context.acquired
-    assert cache.get(_build_lock_cache_key("test_lock")) is None
+    assert cache.get(build_global_cache_key("test_lock")) is None
