@@ -8,7 +8,7 @@ from jnt_django_toolbox.models.fields.bit.types import BitHandler
 
 class BitFieldFormField(IntegerField):
     def __init__(self, choices=(), widget=BitFieldWidget, *args, **kwargs):
-
+        """Initializing."""
         if isinstance(kwargs["initial"], int):
             iv = kwargs["initial"]
             iv_list = []

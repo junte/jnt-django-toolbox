@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 from contextlib import suppress
 
 from jnt_django_toolbox.models.fields.bit.types import Bit, BitHandler
@@ -6,6 +7,7 @@ from jnt_django_toolbox.models.fields.bit.types import Bit, BitHandler
 
 class BitQueryLookupWrapper:
     def __init__(self, alias, column, bit):
+        """Initializing."""
         self.table_alias = alias
         self.column = column
         self.bit = bit

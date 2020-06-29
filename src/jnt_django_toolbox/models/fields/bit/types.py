@@ -11,11 +11,10 @@ def cmp(a, b):
 
 
 class Bit:
-    """
-    Represents a single Bit.
-    """
+    """Represents a single Bit."""
 
     def __init__(self, number, is_set=True):
+        """Initializing."""
         self.number = number
         self.is_set = bool(is_set)
         self.mask = 2 ** int(number)
@@ -30,10 +29,8 @@ class Bit:
         return evaluator.prepare_node(self, query, allow_joins)
 
     def __repr__(self):
-        return "<%s: number=%d, is_set=%s>" % (
-            self.__class__.__name__,
-            self.number,
-            self.is_set,
+        return "<{0}: number={1}, is_set={2}>".format(
+            self.__class__.__name__, self.number, self.is_set,
         )
 
     def __int__(self):
@@ -112,11 +109,10 @@ class Bit:
 
 
 class BitHandler:
-    """
-    Represents an array of bits, each as a ``Bit`` object.
-    """
+    """Represents an array of bits, each as a ``Bit`` object."""
 
     def __init__(self, value, keys, labels=None):
+        """Initializing."""
         # TODO: change to bitarray?
         if value:
             self._value = int(value)
