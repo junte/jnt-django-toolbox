@@ -24,6 +24,7 @@ packages = [
 python = "^3.8"
 django = ">=2"
 dateparser = "^0.7.6"
+jaeger-client = {version = "^4.3.0", optional = true}
 
 [tool.poetry.dev-dependencies]
 mypy = "*"
@@ -43,6 +44,9 @@ pytest-freezegun = "*"
 wemake-python-styleguide = "*"
 black = "^19.10b0"
 flake8-class-attributes-order = "*"
+
+[tool.poetry.extras]
+jaeger = ["jaeger-client"]
 
 [tool.black]
 line-length = 79
