@@ -51,6 +51,8 @@ build:
 
 publish_pypi:
   stage: publish
+  only:
+    - master
   image: $DOCKER_TEST_IMAGE
   allow_failure: true
   variables:
