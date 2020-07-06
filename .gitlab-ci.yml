@@ -27,14 +27,14 @@ build:
     - docker push $DOCKER_TEST_IMAGE
     - docker push $DOCKER_CACHE_IMAGE
 
-.quality:
+quality:
   stage: test
   image: $DOCKER_TEST_IMAGE
   script:
     - cd /app
     - make check_quality
 
-.test:
+test:
   stage: test
   image: $DOCKER_TEST_IMAGE
   script:
