@@ -8,6 +8,7 @@ variables:
 stages:
   - build
   - test
+  - publish
 
 build:
   stage: build
@@ -27,15 +28,15 @@ build:
     - docker push $DOCKER_CACHE_IMAGE
 
 quality:
-  image: $DOCKER_TEST_IMAGE
   stage: test
+  image: $DOCKER_TEST_IMAGE
   script:
     - cd /app
     - make check_quality
 
 test:
-  image: $DOCKER_TEST_IMAGE
   stage: test
+  image: $DOCKER_TEST_IMAGE
   script:
     - cd /app
     - pytest -n auto --cov-report=html:coverage_html
@@ -47,3 +48,13 @@ test:
   artifacts:
     paths:
       - coverage
+
+publish_pypi:
+  stage: build
+  image: $DOCKER_TEST_IMAGE
+  variables:
+    GIT_DEPTH: 5
+    GIT_STRATEGY: fetch
+  script:
+    - poetry build
+    - poetry publish
