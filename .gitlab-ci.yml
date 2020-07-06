@@ -52,6 +52,7 @@ build:
 publish_pypi:
   stage: publish
   image: $DOCKER_TEST_IMAGE
+  allow_failure: true
   variables:
     GIT_DEPTH: 5
     GIT_STRATEGY: fetch
