@@ -3,17 +3,21 @@
 from functools import wraps
 
 from django.conf import settings
-from jnt_django_toolbox.profiling.profilers import JaegerProfiler
 from opentracing import global_tracer
+
+from jnt_django_toolbox.profiling.profilers import JaegerProfiler
 
 
 def trace_span(func):
+    """Wrap function for jaeger tracing."""
+
     @wraps(func)
-    def handle(*args, **kwargs):
-        if not any(
+    def handle(*args, **kwargs):  # noqa: WPS430
+        is_tracing = any(
             isinstance(profiler, JaegerProfiler)
             for profiler in settings.REQUEST_PROFILERS
-        ):
+        )
+        if not is_tracing:
             return func(*args, **kwargs)
 
         caller = args[0]

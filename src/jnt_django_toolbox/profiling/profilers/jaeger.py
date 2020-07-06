@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import jaeger_client
+from opentracing import global_tracer
 
 from jnt_django_toolbox.profiling.profilers.base import BaseProfiler
-from opentracing import global_tracer
 
 
 class JaegerProfiler(BaseProfiler):
@@ -19,6 +19,13 @@ class JaegerProfiler(BaseProfiler):
         """Initializing."""
         self._init_tracer()
 
+    def before_request(self, request, stack):
+        """Start capturing requests."""
+        global_tracer().start_active_span(request.path)
+
+    def after_request(self, request, response):
+        """Add profiling info to response."""
+
     def _init_tracer(self):
         config = jaeger_client.Config(
             config={
@@ -31,10 +38,3 @@ class JaegerProfiler(BaseProfiler):
         )
 
         config.initialize_tracer()
-
-    def before_request(self, request, stack):
-        """Start capturing requests."""
-        global_tracer().start_active_span(request.path),
-
-    def after_request(self, request, response):
-        """Add profiling info to response."""
