@@ -26,4 +26,4 @@ RUN apt update \
 
 COPY . .
 
-RUN poetry install --no-interaction --no-ansi
+RUN poetry install --no-interaction --no-ansi -E jaeger
