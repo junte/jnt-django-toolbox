@@ -44,6 +44,7 @@ pytest-freezegun = "*"
 wemake-python-styleguide = "*"
 black = "^19.10b0"
 flake8-class-attributes-order = "*"
+isort = ">=4.3.5 <5"
 
 [tool.poetry.extras]
 jaeger = ["jaeger-client"]
