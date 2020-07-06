@@ -50,7 +50,7 @@ test:
       - coverage
 
 publish_pypi:
-  stage: build
+  stage: publish
   image: $DOCKER_TEST_IMAGE
   variables:
     GIT_DEPTH: 5
