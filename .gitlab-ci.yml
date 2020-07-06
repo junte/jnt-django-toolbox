@@ -56,5 +56,6 @@ publish_pypi:
     GIT_DEPTH: 5
     GIT_STRATEGY: fetch
   script:
+    - poetry config pypi-token.pypi $PYPI_API_TOKEN
     - poetry build
     - poetry publish
