@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "jnt-django-toolbox"
-version = "0.1.17"
+version = "0.1.18"
 description = ""
 authors = ["Junte <tech@junte.ru>"]
 classifiers=[
