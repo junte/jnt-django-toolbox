@@ -15,6 +15,3 @@ def test_ensure_fields_save_empty():
     ensure_fields_saved(kwargs, ["title"])
 
     assert not kwargs
-
-
-
