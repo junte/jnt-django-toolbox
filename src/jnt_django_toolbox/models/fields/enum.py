@@ -2,6 +2,8 @@
 
 from django.db import models
 
+from jnt_django_toolbox.forms.fields import EnumChoiceField
+
 
 class EnumField(models.TextField):
     """
@@ -23,3 +25,11 @@ class EnumField(models.TextField):
         kwargs["enum"] = self.enum
 
         return name, path, args, kwargs
+
+    def formfield(self, **kwargs):
+        """Build form field."""
+        kwargs["choices_form_class"] = EnumChoiceField
+        form_field = super().formfield(**kwargs)
+        form_field.enum = self.enum
+
+        return form_field
