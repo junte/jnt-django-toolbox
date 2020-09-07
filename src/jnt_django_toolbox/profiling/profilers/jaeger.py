@@ -21,8 +21,8 @@ class JaegerProfiler(BaseProfiler):
 
     def __init__(self, service_name: str) -> None:
         """Initializing."""
-        self._init_tracer()
         self._service_name = service_name
+        self._init_tracer()
 
     def before_request(self, request, stack) -> None:
         """Start capturing requests."""
