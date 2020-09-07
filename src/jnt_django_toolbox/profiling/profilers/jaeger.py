@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
 
+from contextlib import contextmanager
+
 import jaeger_client
+from django.db import connections
 from opentracing import global_tracer
 
+from jnt_django_toolbox.profiling.db.jaeger import unwrap_cursor, wrap_cursor
 from jnt_django_toolbox.profiling.profilers.base import BaseProfiler
 
 
@@ -39,3 +43,12 @@ class JaegerProfiler(BaseProfiler):
         )
 
         config.initialize_tracer()
+
+
+@contextmanager
+def trace_sql_queries():
+    """Enable tracing sql queries count."""
+    for connection in connections.all():
+        wrap_cursor(connection)
+        yield
+        unwrap_cursor(connection)
