@@ -15,25 +15,26 @@ class JaegerProfiler(BaseProfiler):
     Mac users might need to run `sudo sysctl net.inet.udp.maxdgram=65536`
     """
 
-    def __init__(self):
+    def __init__(self, service_name: str) -> None:
         """Initializing."""
         self._init_tracer()
+        self._service_name = service_name
 
-    def before_request(self, request, stack):
+    def before_request(self, request, stack) -> None:
         """Start capturing requests."""
         global_tracer().start_active_span(request.path)
 
     def after_request(self, request, response):
         """Add profiling info to response."""
 
-    def _init_tracer(self):
+    def _init_tracer(self) -> None:
         config = jaeger_client.Config(
             config={
                 "sampler": {"type": "const", "param": 1},
                 "logging": True,
                 "max_tag_value_length": 8192,
             },
-            service_name="Backend",
+            service_name=self._service_name,
             validate=True,
         )
 

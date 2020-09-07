@@ -9,9 +9,9 @@ from jnt_django_toolbox.profiling.profilers.base import BaseProfiler
 class DatabaseQueriesProfiler(BaseProfiler):
     """Database queries count profiler."""
 
-    def __init__(self, cookie: str = "Db-Queries-Count"):
+    def __init__(self, header: str = "Db-Queries-Count"):
         """Initializing."""
-        self._cookie = cookie
+        self._header = header
 
     def before_request(self, request, stack):
         """Start capturing requests."""
@@ -20,4 +20,4 @@ class DatabaseQueriesProfiler(BaseProfiler):
 
     def after_request(self, request, response):
         """Add profiling info to response."""
-        response[self._cookie] = len(self._context)
+        response[self._header] = len(self._context)
