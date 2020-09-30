@@ -26,7 +26,8 @@ class JaegerProfiler(BaseProfiler):
 
     def before_request(self, request, stack) -> None:
         """Start capturing requests."""
-        global_tracer().start_active_span(request.path)
+        stack.enter_context(global_tracer().start_active_span(request.path))
+        stack.enter_context(trace_sql_queries())
 
     def after_request(self, request, response):
         """Add profiling info to response."""
