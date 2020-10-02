@@ -26,3 +26,14 @@ def snack_case_to_camel_case(text):
     """Convert snake_case -> CamelCase."""
     first, *words = text.split("_")
     return "{0}{1}".format(first, "".join(map(lambda x: x.title(), words)))
+
+
+def remove_prefix(text, prefix):
+    """
+    Remove prefix for string.
+
+    Obsolete with python3.9+
+    """
+    if text.startswith(prefix):
+        return text[len(prefix) :]
+    return text
