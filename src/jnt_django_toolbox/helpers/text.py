@@ -4,7 +4,7 @@ import re
 
 
 def truncate_text(text: str, max_length: int = 50) -> str:
-    """Trancate long text."""
+    """Truncate long text."""
     if not text:
         return ""
 
