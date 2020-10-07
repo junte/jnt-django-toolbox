@@ -2,6 +2,8 @@
 
 from functools import wraps
 
+from django.utils.safestring import mark_safe
+
 
 def admin_field(short_description=None, allow_tags=True):
     """Render custom field or add link in the admin detail page.
@@ -17,7 +19,6 @@ def admin_field(short_description=None, allow_tags=True):
 
         from jnt_admin_tools.decorators import admin_field
         from django.contrib import admin
-        from django.utils.safestring import mark_safe
         from test_app.models import Bar
 
         @admin.register(Bar)
@@ -27,7 +28,7 @@ def admin_field(short_description=None, allow_tags=True):
 
             @admin_field('Custom field')
             def custom_field(self, obj):
-                return mark_safe('<h1>custom field</h1>')
+                return '<h1>custom field</h1>'
 
     .. image:: images/decorators/decorator_admin_field.png
     """
@@ -35,7 +36,10 @@ def admin_field(short_description=None, allow_tags=True):
     def wrap(func):  # noqa: WPS430
         @wraps(func)
         def field_func(self, instance):  # noqa: WPS430
-            return func(self, instance)
+            func_result = func(self, instance)
+            if allow_tags:
+                func_result = mark_safe(func_result)  # noqa: S308, S703
+            return func_result
 
         field_func.short_description = short_description
         field_func.allow_tags = allow_tags
