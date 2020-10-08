@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-
-
 def wrap_cursor(connection):
     """Wrap cursor for logging sql queries."""
     if not hasattr(connection, "_logged_cursor"):  # noqa: WPS421

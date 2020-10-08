@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import pytest
 
 from jnt_django_toolbox.helpers.objects import dict2obj, getattr_nested

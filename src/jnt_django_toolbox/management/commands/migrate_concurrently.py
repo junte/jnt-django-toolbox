@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from django.core.management.commands import migrate
 
 from jnt_django_toolbox.context_managers import global_lock

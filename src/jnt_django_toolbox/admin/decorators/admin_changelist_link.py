@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from functools import wraps
 
 from django.forms.utils import pretty_name

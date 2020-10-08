@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from django.forms import CheckboxSelectMultiple
 from django.utils.encoding import force_text
 

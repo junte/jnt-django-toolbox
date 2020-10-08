@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from jnt_django_toolbox.helpers.objects import dict2obj
 
 

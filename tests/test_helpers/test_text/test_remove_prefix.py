@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import pytest
 
 from jnt_django_toolbox.helpers.text import remove_prefix
