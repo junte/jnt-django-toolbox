@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import pickle  # noqa: S403
 
 from jnt_django_toolbox.models.fields.bit.types import BitHandler

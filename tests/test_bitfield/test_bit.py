@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from jnt_django_toolbox.models.fields.bit.types import Bit
 
 

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from contextlib import suppress
 
 from jnt_django_toolbox.models.fields.bit.types import Bit, BitHandler

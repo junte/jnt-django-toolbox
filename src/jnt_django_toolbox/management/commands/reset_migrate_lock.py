@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from django.core.cache import cache
 from django.core.management.commands import migrate
 
