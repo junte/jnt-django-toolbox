@@ -1,3 +1,4 @@
+import calendar
 from datetime import date, datetime, timedelta
 from typing import Union
 
@@ -18,9 +19,14 @@ def date2datetime(value: date) -> datetime:  # noqa: WPS110
     return datetime.combine(value, datetime.min.time())
 
 
-def begin_of_week(value: date) -> date:  # noqa: WPS110
+def begin_of_week(target: date, first_weekday: int = calendar.MONDAY) -> date:
     """Get begin of week."""
-    return value - timedelta(days=value.weekday() % 7)
+    days_passed = target.weekday() - first_weekday
+
+    if days_passed < 0:
+        days_passed += 7
+
+    return target - timedelta(days=days_passed)
 
 
 def humanize_time(total_seconds: Number) -> str:
