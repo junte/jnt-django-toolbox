@@ -9,6 +9,7 @@ from jnt_django_toolbox.profiling.profilers import JaegerProfiler
 
 def trace_span(show_args: bool = False):
     """Wrap function for jaeger tracing."""
+
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):  # noqa: WPS430
