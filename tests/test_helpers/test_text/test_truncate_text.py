@@ -32,6 +32,7 @@ from jnt_django_toolbox.helpers.text import truncate_text
         ("internationalization", "internat...ion", 14),
         ("", "", 10),
         ("simply", "", 0),
+        ("\r\n\r\nsev\r\nenth\r\n", "se...h", 6),
     ],
 )
 def test_truncate_text_with_max_length(source, output, max_length):

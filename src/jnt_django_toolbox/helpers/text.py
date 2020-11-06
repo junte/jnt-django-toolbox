@@ -12,6 +12,8 @@ def truncate_text(text: str, max_length: int = 50) -> str:
 
     len_ellipsis = len(ELLIPSIS)
 
+    text = text.replace("\r", "").replace("\n", "")
+
     if max_length >= len(text):
         return text
     elif len_ellipsis >= max_length:
