@@ -25,9 +25,9 @@ class DatabaseQueriesProfiler(BaseProfiler):
         if query_timings:
             stats.extend(
                 [
-                    "db_total_time={0:.4f}".format(sum(query_timings)),
-                    "db_max_time={0:.4f}".format(max(query_timings)),
-                    "db_average={0:.4f}".format(mean(query_timings)),
+                    "db_total={0:.4f}".format(sum(query_timings)),
+                    "db_max={0:.4f}".format(max(query_timings)),
+                    "db_avg={0:.4f}".format(mean(query_timings)),
                 ],
             )
 
