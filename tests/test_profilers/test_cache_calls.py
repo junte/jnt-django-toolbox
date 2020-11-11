@@ -1,10 +1,8 @@
 import re
 from contextlib import ExitStack
-from unittest.mock import patch
 
 from django.core.cache import cache
 from django.http import HttpResponse
-
 from jnt_django_toolbox.profiling.profilers import CacheCallsProfiler
 
 
