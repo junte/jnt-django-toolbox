@@ -8,7 +8,6 @@ from django.http import HttpResponse
 from jnt_django_toolbox.profiling.profilers import CacheCallsProfiler
 
 
-@patch("django.core.cache.cache")
 def test_cache_calls_provider(rf):
     """Testing cache calls are appended to the response."""
     request = rf.request()
