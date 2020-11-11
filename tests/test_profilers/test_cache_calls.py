@@ -3,6 +3,7 @@ from contextlib import ExitStack
 
 from django.core.cache import cache
 from django.http import HttpResponse
+
 from jnt_django_toolbox.profiling.profilers import CacheCallsProfiler
 
 
