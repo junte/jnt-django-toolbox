@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "jnt-django-toolbox"
-version = "0.1.36"
+version = "0.1.37"
 description = ""
 authors = ["Junte <tech@junte.ru>"]
 classifiers=[
@@ -22,9 +22,9 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.8"
-django = ">=2"
-dateparser = "^0.7.6"
-jaeger-client = {version = "^4.3.0", optional = true}
+django = ">=3"
+dateparser = "*"
+jaeger-client = {version = "*", optional = true}
 
 [tool.poetry.dev-dependencies]
 mypy = "*"
