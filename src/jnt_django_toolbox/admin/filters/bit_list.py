@@ -18,7 +18,12 @@ class BitFieldListFilter(FieldListFilter):
         self.flags = field.flags
         self.labels = field.labels
         super().__init__(
-            field, request, params, model, model_admin, field_path,
+            field,
+            request,
+            params,
+            model,
+            model_admin,
+            field_path,
         )
 
     def queryset(self, request, queryset):

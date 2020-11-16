@@ -23,12 +23,14 @@ def wrap_cursor(connection):
             # https://github.com/jazzband/django-debug-toolbar/pull/615
             # https://github.com/jazzband/django-debug-toolbar/pull/896
             return NormalCursorWrapper(
-                connection._traced_cursor(*args, **kwargs), connection,
+                connection._traced_cursor(*args, **kwargs),
+                connection,
             )
 
         def chunked_cursor(*args, **kwargs):  # noqa: WPS430
             return NormalCursorWrapper(
-                connection._traced_chunked_cursor(*args, **kwargs), connection,
+                connection._traced_chunked_cursor(*args, **kwargs),
+                connection,
             )
 
         connection.cursor = cursor
@@ -105,7 +107,8 @@ class NormalCursorWrapper:
         convert_types = (datetime.datetime, datetime.date, datetime.time)
         try:
             return force_str(
-                param, strings_only=not isinstance(param, convert_types),
+                param,
+                strings_only=not isinstance(param, convert_types),
             )
         except UnicodeDecodeError:
             return "(encoded string)"
@@ -144,7 +147,9 @@ class NormalCursorWrapper:
                         "vendor": vendor,
                         "alias": alias,
                         "sql": self.db.ops.last_executed_query(
-                            self.cursor, sql_str, self._quote_params(params),
+                            self.cursor,
+                            sql_str,
+                            self._quote_params(params),
                         ),
                         "duration": "{0} ms".format(floor(duration)),
                         "raw_sql": sql_str,

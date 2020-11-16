@@ -24,7 +24,8 @@ def test_humanize_time(seconds, human_present):
 
 
 @pytest.mark.parametrize(
-    "seconds", ["", "any string", [], [12], {}, {"test": 4}, object],
+    "seconds",
+    ["", "any string", [], [12], {}, {"test": 4}, object],
 )
 def test_humanize_time_no_valid_data(seconds):
     """Test if not valid args."""

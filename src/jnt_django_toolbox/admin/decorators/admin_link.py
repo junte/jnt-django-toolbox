@@ -48,7 +48,9 @@ def admin_link(attr, short_description=None, empty_description="-"):
                 return empty_description
             url = urls.admin_change_url(related_obj)
             return format_html(
-                '<a href="{0}">{1}</a>', url, func(self, related_obj),
+                '<a href="{0}">{1}</a>',
+                url,
+                func(self, related_obj),
             )
 
         field_func.short_description = (

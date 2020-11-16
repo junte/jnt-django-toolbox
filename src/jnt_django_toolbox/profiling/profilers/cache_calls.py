@@ -30,7 +30,9 @@ class _CaptureCacheCallsContext:
         for method in _CACHE_METHODS:
             self.original_methods[method] = getattr(cache, method)
             setattr(
-                cache, method, self._track_call(self.original_methods[method]),
+                cache,
+                method,
+                self._track_call(self.original_methods[method]),
             )
 
     def __exit__(self, exc_type, exc_value, traceback):

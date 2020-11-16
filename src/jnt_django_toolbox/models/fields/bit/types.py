@@ -31,7 +31,9 @@ class Bit:
 
     def __repr__(self):
         return "<{0}: number={1}, is_set={2}>".format(
-            self.__class__.__name__, self.number, self.is_set,
+            self.__class__.__name__,
+            self.number,
+            self.is_set,
         )
 
     def __int__(self):
@@ -257,10 +259,12 @@ def register_postgres_adapters():
         from django.db.backends.postgresql.base import Database
 
         Database.extensions.register_adapter(
-            Bit, lambda x: Database.extensions.AsIs(int(x)),
+            Bit,
+            lambda x: Database.extensions.AsIs(int(x)),
         )
         Database.extensions.register_adapter(
-            BitHandler, lambda x: Database.extensions.AsIs(int(x)),
+            BitHandler,
+            lambda x: Database.extensions.AsIs(int(x)),
         )
 
 
