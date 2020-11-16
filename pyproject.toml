@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "jnt-django-toolbox"
-version = "0.1.35"
+version = "0.1.36"
 description = ""
 authors = ["Junte <tech@junte.ru>"]
 classifiers=[
@@ -41,9 +41,8 @@ flake8 = "*"
 flake8-pytest-style = "*"
 pytest-freezegun = "*"
 wemake-python-styleguide = "*"
-black = "^19.10b0"
+black = "^20.8b1"
 flake8-class-attributes-order = "*"
-isort = ">=4.3.5 <5"
 
 [tool.poetry.extras]
 jaeger = ["jaeger-client"]
