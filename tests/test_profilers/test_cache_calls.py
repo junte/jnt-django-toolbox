@@ -7,7 +7,7 @@ from django.http import HttpResponse
 from jnt_django_toolbox.profiling.profilers import CacheCallsProfiler
 
 
-def test_cache_calls_provider(rf):
+def test_cache_calls_profiler(rf):
     """Testing cache calls are appended to the response."""
     request = rf.request()
     profiler = CacheCallsProfiler("Foobar Cache")
