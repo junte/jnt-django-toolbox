@@ -21,10 +21,11 @@ class DatabaseQueriesProfiler(BaseProfiler):
     def after_request(self, request, response):
         """Add profiling info to response."""
         query_timings = [float(query["time"]) for query in self._context]
+        if query_timings:
+            response[self._header("total_time")] = round(sum(query_timings), 3)
+            response[self._header("max_time")] = round(max(query_timings), 3)
+            response[self._header("avg_time")] = round(mean(query_timings), 3)
 
-        response[self._header("total_time")] = round(sum(query_timings), 3)
-        response[self._header("max_time")] = round(max(query_timings), 3)
-        response[self._header("avg_time")] = round(mean(query_timings), 3)
         response[self._header("count")] = len(self._context)
 
     def _header(self, name: str) -> str:
