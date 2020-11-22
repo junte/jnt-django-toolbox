@@ -54,9 +54,9 @@ class _CaptureCacheCallsContext:
 class CacheCallsProfiler(BaseProfiler):
     """Cache calls count profiler."""
 
-    def __init__(self, header: str = "Cache-Stats"):
+    def __init__(self, header_prefix: str = "app_cache_"):
         """Initializing."""
-        self._header = header
+        self._header_prefix = header_prefix
 
     def before_request(self, request: HttpRequest, stack: ExitStack):
         """Start capturing cache calls."""
@@ -66,13 +66,12 @@ class CacheCallsProfiler(BaseProfiler):
     def after_request(self, request: HttpRequest, response: HttpResponse):
         """Add profiling info to response."""
         stats = self._context.stats
-        formatted = [
-            "cache_duration={0:.3f}".format(
-                sum(sum(duration) for duration in stats.values()),
-            ),
-            *(
-                "cache_{0}_count={1}".format(name, len(durations))
-                for name, durations in sorted(stats.items())
-            ),
-        ]
-        response[self._header] = " ".join(formatted)
+
+        response["{0}_time".format(self._header_prefix)] = round(
+            sum(sum(duration) for duration in stats.values()),
+            3,
+        )
+
+        for name, durations in sorted(stats.items()):
+            header = "{0}_{1}_count".format(self._header_prefix, name)
+            response[header] = len(durations)
