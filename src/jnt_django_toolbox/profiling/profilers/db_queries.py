@@ -2,6 +2,7 @@ from statistics import mean
 
 from django.db import connection
 from django.test.utils import CaptureQueriesContext
+
 from jnt_django_toolbox.profiling.profilers.base import BaseProfiler
 
 

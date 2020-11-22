@@ -1,16 +1,14 @@
-import re
 from contextlib import ExitStack
 
 from django.core.cache import cache
 from django.http import HttpResponse
-
 from jnt_django_toolbox.profiling.profilers import CacheCallsProfiler
 
 
 def test_cache_calls_profiler(rf):
     """Testing cache calls are appended to the response."""
     request = rf.request()
-    profiler = CacheCallsProfiler("Foobar Cache")
+    profiler = CacheCallsProfiler("app")
     with ExitStack() as stack:
         profiler.before_request(request, stack)
         cache.get("abc")
@@ -19,7 +17,10 @@ def test_cache_calls_profiler(rf):
         response = HttpResponse(b"dummy")
         profiler.after_request(request, response)
 
-    assert re.match(
-        r"cache_duration=([.\d]+) cache_delete_count=1 cache_get_count=1 cache_set_count=2 cache_set_many_count=1",  # noqa: E501
-        response["Foobar Cache"],
-    )
+    assert "app_time" in response
+
+    expected = (("delete", 1), ("get", 1), ("set", 2), ("set_many", 1))
+
+    for name, value in expected:
+        assert response["app_{0}_count".format(name)] == str(value)
+
