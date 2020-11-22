@@ -2,6 +2,7 @@ from contextlib import ExitStack
 
 from django.core.cache import cache
 from django.http import HttpResponse
+
 from jnt_django_toolbox.profiling.profilers import CacheCallsProfiler
 
 
@@ -23,4 +24,3 @@ def test_cache_calls_profiler(rf):
 
     for name, value in expected:
         assert response["app_{0}_count".format(name)] == str(value)
-
