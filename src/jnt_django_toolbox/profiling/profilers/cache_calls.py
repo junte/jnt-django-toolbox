@@ -54,7 +54,7 @@ class _CaptureCacheCallsContext:
 class CacheCallsProfiler(BaseProfiler):
     """Cache calls count profiler."""
 
-    def __init__(self, header_prefix: str = "app_cache_"):
+    def __init__(self, header_prefix: str = "app_cache"):
         """Initializing."""
         self._header_prefix = header_prefix
 
