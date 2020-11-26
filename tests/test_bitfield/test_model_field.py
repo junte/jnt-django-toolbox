@@ -37,7 +37,8 @@ def test_negative_in_raw_sql(db):
     flags_db_column = flags_field.db_column or flags_field.name
     cursor.execute(
         "INSERT INTO {0} ({1}) VALUES (-1)".format(
-            BitFieldTestModel._meta.db_table, flags_db_column,
+            BitFieldTestModel._meta.db_table,
+            flags_db_column,
         ),
     )
     # There should only be the one row we inserted through the cursor.
@@ -204,7 +205,8 @@ class DefaultKeyNamesModel(models.Model):
     """Model for testing key names as a bitfield keys."""
 
     flags = BitField(
-        flags=("FLAG1", "FLAG2", "FLAG3", "FLAG4"), default=("FLAG2", "FLAG3"),
+        flags=("FLAG1", "FLAG2", "FLAG3", "FLAG4"),
+        default=("FLAG2", "FLAG3"),
     )
 
 

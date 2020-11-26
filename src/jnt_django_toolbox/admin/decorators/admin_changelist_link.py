@@ -8,7 +8,10 @@ from jnt_django_toolbox.helpers.objects import getattr_nested
 
 
 def admin_changelist_link(
-    attr, short_description=None, empty_description="-", query_string=None,
+    attr,
+    short_description=None,
+    empty_description="-",
+    query_string=None,
 ):
     """Render a link to the list of a related model in the admin changelist.
 
@@ -59,7 +62,9 @@ def admin_changelist_link(
             if query_string:
                 url = "{0}?{1}".format(url, query_string(obj))
             return format_html(
-                '<a href="{0}">{1}</a>', url, func(self, related_obj),
+                '<a href="{0}">{1}</a>',
+                url,
+                func(self, related_obj),
             )
 
         field_func.short_description = (

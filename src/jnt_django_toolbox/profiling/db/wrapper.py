@@ -13,12 +13,14 @@ def wrap_cursor(connection):
             # https://github.com/jazzband/django-debug-toolbar/pull/615
             # https://github.com/jazzband/django-debug-toolbar/pull/896
             return NormalCursorWrapper(
-                connection._logged_cursor(*args, **kwargs), connection,
+                connection._logged_cursor(*args, **kwargs),
+                connection,
             )
 
         def chunked_cursor(*args, **kwargs):  # noqa: WPS430
             return NormalCursorWrapper(
-                connection._logged_chunked_cursor(*args, **kwargs), connection,
+                connection._logged_chunked_cursor(*args, **kwargs),
+                connection,
             )
 
         connection.cursor = cursor

@@ -1,11 +1,11 @@
 from contextlib import contextmanager
 
-import jaeger_client
 from django.db import connections
-from opentracing import global_tracer
 
+import jaeger_client
 from jnt_django_toolbox.profiling.db.jaeger import unwrap_cursor, wrap_cursor
 from jnt_django_toolbox.profiling.profilers.base import BaseProfiler
+from opentracing import global_tracer
 
 
 class JaegerProfiler(BaseProfiler):

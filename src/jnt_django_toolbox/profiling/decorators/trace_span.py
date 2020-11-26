@@ -2,9 +2,9 @@ import itertools
 from functools import wraps
 
 from django.conf import settings
-from opentracing import global_tracer
 
 from jnt_django_toolbox.profiling.profilers import JaegerProfiler
+from opentracing import global_tracer
 
 
 def trace_span(show_args: bool = False):
@@ -24,7 +24,8 @@ def trace_span(show_args: bool = False):
             caller_class = caller.__class__
 
             operation_name = "{0}.{1}".format(
-                caller_class.__name__, func.__name__,
+                caller_class.__name__,
+                func.__name__,
             )
             if show_args:
                 operation_name = "{0} [{1}]".format(
@@ -41,7 +42,8 @@ def trace_span(show_args: bool = False):
                 )
 
             with global_tracer().start_active_span(
-                operation_name, child_of=global_tracer().active_span,
+                operation_name,
+                child_of=global_tracer().active_span,
             ):
                 return func(*args, **kwargs)
 
