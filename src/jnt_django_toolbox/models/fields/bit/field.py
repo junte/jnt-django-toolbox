@@ -138,11 +138,7 @@ class BitField(BigIntegerField):
         return int(value)
 
     def get_db_prep_lookup(
-        self,
-        lookup_type,
-        value,
-        connection,
-        prepared=False,
+        self, lookup_type, value, connection, prepared=False,
     ):
         """Get db prepared lookup."""
         if isinstance(getattr(value, "expression", None), Bit):

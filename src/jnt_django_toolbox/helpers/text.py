@@ -27,9 +27,7 @@ def truncate_text(text: str, max_length: int = 50) -> str:
     end = max_length - start - len_ellipsis
 
     return "{0}{1}{2}".format(
-        text[:start],
-        ELLIPSIS,
-        text[-end:] if end > 0 else "",
+        text[:start], ELLIPSIS, text[-end:] if end > 0 else "",
     )
 
 

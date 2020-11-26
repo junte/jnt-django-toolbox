@@ -30,9 +30,7 @@ class _CaptureCacheCallsContext:
         for method in _CACHE_METHODS:
             self.original_methods[method] = getattr(cache, method)
             setattr(
-                cache,
-                method,
-                self._track_call(self.original_methods[method]),
+                cache, method, self._track_call(self.original_methods[method]),
             )
 
     def __exit__(self, exc_type, exc_value, traceback):
@@ -68,8 +66,7 @@ class CacheCallsProfiler(BaseProfiler):
         stats = self._context.stats
 
         response["{0}_time".format(self._header_prefix)] = round(
-            sum(sum(duration) for duration in stats.values()),
-            3,
+            sum(sum(duration) for duration in stats.values()), 3,
         )
 
         for name, durations in sorted(stats.items()):

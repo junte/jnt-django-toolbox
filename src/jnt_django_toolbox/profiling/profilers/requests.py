@@ -17,8 +17,7 @@ class RequestsProfiler(BaseProfiler):
     def after_request(self, request, response):
         """Add profiling info to response."""
         response[self._header("time")] = round(
-            time.time() - self._start_time,
-            3,
+            time.time() - self._start_time, 3,
         )
 
     def _header(self, name: str) -> str:
