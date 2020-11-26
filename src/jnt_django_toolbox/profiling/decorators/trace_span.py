@@ -2,9 +2,9 @@ import itertools
 from functools import wraps
 
 from django.conf import settings
+from opentracing import global_tracer
 
 from jnt_django_toolbox.profiling.profilers import JaegerProfiler
-from opentracing import global_tracer
 
 
 def trace_span(show_args: bool = False):

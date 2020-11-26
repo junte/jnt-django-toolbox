@@ -6,7 +6,6 @@ from time import time
 
 from django.template.defaultfilters import truncatechars
 from django.utils.encoding import force_str
-
 from opentracing import global_tracer
 
 
