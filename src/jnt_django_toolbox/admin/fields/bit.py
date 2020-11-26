@@ -1,11 +1,16 @@
 from django.forms import IntegerField, ValidationError
 
-from jnt_django_toolbox.admin.widgets.bit import BitFieldWidget
+from jnt_django_toolbox.admin.widgets import (
+    BitFieldReadOnlyWidget,
+    BitFieldWidget,
+)
 from jnt_django_toolbox.models.fields.bit.types import BitHandler
 
 
 class BitFieldFormField(IntegerField):
     """Form field for bit field."""
+
+    readonly_widget = BitFieldReadOnlyWidget
 
     def __init__(self, choices=(), widget=BitFieldWidget, *args, **kwargs):
         """Initializing."""
