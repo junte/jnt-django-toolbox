@@ -1,3 +1,5 @@
+from collections.abc import Iterable
+
 from django.forms import IntegerField, ValidationError
 
 from jnt_django_toolbox.admin.widgets import (
@@ -44,6 +46,17 @@ class BitFieldFormField(IntegerField):
         """Check changed field."""
         changed = super().has_changed(initial, data)
         if changed:
-            changed = self.clean(data) != int(initial)
+            changed = self._has_changed(initial, data)
 
         return changed
+
+    def _has_changed(self, initial, data) -> bool:
+        """Check is changed field."""
+        initial_value = 0
+
+        if isinstance(initial, BitHandler):
+            initial_value = int(initial)
+        elif isinstance(initial, Iterable):
+            initial_value = self.clean(initial)
+
+        return self.clean(data) != initial_value
