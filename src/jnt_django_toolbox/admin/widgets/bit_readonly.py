@@ -4,6 +4,8 @@ from typing import Optional
 class BitFieldReadOnlyWidget:
     """Readonly widget for bit field."""
 
+    empty_value = "-"
+
     def __init__(self, formfield) -> None:
         """Initializing."""
         self._formfield = formfield
@@ -15,7 +17,7 @@ class BitFieldReadOnlyWidget:
         ]
 
         if not checked_values:
-            return None
+            return self.empty_value
 
         return ", ".join(
             (
