@@ -18,7 +18,7 @@ def test_cache_calls_profiler(rf):
         response = HttpResponse(b"dummy")
         profiler.after_request(request, response)
 
-    assert "app_time" in response
+    assert "app_total_time" in response
 
     expected = (("delete", 1), ("get", 1), ("set", 2), ("set_many", 1))
 
