@@ -39,3 +39,11 @@ class BitFieldFormField(IntegerField):
             except AttributeError:
                 raise ValidationError("Unknown choice: {0}".format(k))
         return int(result)
+
+    def has_changed(self, initial, data):
+        """Check changed field."""
+        changed = super().has_changed(initial, data)
+        if changed:
+            changed = self.clean(data) != int(initial)
+
+        return changed
