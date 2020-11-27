@@ -67,7 +67,7 @@ class CacheCallsProfiler(BaseProfiler):
         """Add profiling info to response."""
         stats = self._context.stats
 
-        response["{0}_time".format(self._header_prefix)] = round(
+        response["{0}_total_time".format(self._header_prefix)] = round(
             sum(sum(duration) for duration in stats.values()),
             3,
         )
