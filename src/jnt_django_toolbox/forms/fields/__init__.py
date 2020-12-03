@@ -1,1 +1,1 @@
-from .enum import EnumChoiceField
+from .enum import EnumChoiceField, MultipleEnumChoiceField
