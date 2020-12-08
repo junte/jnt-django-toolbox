@@ -20,18 +20,7 @@ class JaegerProfiler(BaseProfiler):
     def __init__(self, service_name: str) -> None:
         """Initializing."""
         self._service_name = service_name
-        self._init_tracer()
-
-    def before_request(self, request, stack) -> None:
-        """Start capturing requests."""
-        stack.enter_context(global_tracer().start_active_span(request.path))
-        stack.enter_context(trace_sql_queries())
-
-    def after_request(self, request, response):
-        """Add profiling info to response."""
-
-    def _init_tracer(self) -> None:
-        config = jaeger_client.Config(
+        self._config = jaeger_client.Config(
             config={
                 "sampler": {"type": "const", "param": 1},
                 "logging": True,
@@ -41,7 +30,16 @@ class JaegerProfiler(BaseProfiler):
             validate=True,
         )
 
-        config.initialize_tracer()
+    def before_request(self, request, stack) -> None:
+        """Start capturing requests."""
+        if not self._config.initialized():
+            self._config.initialize_tracer()
+
+        stack.enter_context(global_tracer().start_active_span(request.path))
+        stack.enter_context(trace_sql_queries())
+
+    def after_request(self, request, response):
+        """Add profiling info to response."""
 
 
 @contextmanager
