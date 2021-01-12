@@ -36,7 +36,7 @@ def test_negative_in_raw_sql(db):
     flags_field = BitFieldTestModel._meta.get_field("flags")
     flags_db_column = flags_field.db_column or flags_field.name
     cursor.execute(
-        "INSERT INTO {0} ({1}) VALUES (-1)".format(
+        "INSERT INTO {0} ({1}) VALUES (-1)".format(  # noqa: S608
             BitFieldTestModel._meta.db_table,
             flags_db_column,
         ),
