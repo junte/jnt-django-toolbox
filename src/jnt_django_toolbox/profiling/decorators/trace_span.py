@@ -4,8 +4,6 @@ from functools import wraps
 from django.conf import settings
 from opentracing import global_tracer
 
-from jnt_django_toolbox.profiling.profilers import JaegerProfiler
-
 
 def trace_span(show_args: bool = False):
     """Wrap function for jaeger tracing."""
@@ -13,6 +11,8 @@ def trace_span(show_args: bool = False):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):  # noqa: WPS430
+            from jnt_django_toolbox.profiling.profilers import JaegerProfiler
+
             is_tracing = any(
                 isinstance(profiler, JaegerProfiler)
                 for profiler in settings.REQUEST_PROFILERS
