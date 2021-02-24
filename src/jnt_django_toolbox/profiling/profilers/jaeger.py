@@ -1,5 +1,3 @@
-from contextlib import contextmanager
-
 import jaeger_client
 from django.db import connections
 from opentracing import global_tracer
@@ -36,16 +34,10 @@ class JaegerProfiler(BaseProfiler):
             self._config.initialize_tracer()
 
         stack.enter_context(global_tracer().start_active_span(request.path))
-        stack.enter_context(trace_sql_queries())
+        for connection in connections.all():
+            wrap_cursor(connection)
 
     def after_request(self, request, response):
         """Add profiling info to response."""
-
-
-@contextmanager
-def trace_sql_queries():
-    """Enable tracing sql queries count."""
-    for connection in connections.all():
-        wrap_cursor(connection)
-        yield
-        unwrap_cursor(connection)
+        for connection in connections.all():
+            unwrap_cursor(connection)
