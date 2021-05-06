@@ -3,12 +3,12 @@ import itertools
 from functools import wraps
 
 from django.conf import settings
+
 from opentracing import global_tracer
 
 
 def trace_span(show_args: bool = False):
     """Wrap function for jaeger tracing."""
-
     frm = inspect.stack()[1]
     mod = inspect.getmodule(frm[0]).__name__
 
@@ -48,8 +48,8 @@ def trace_span(show_args: bool = False):
                 )
 
             with global_tracer().start_active_span(
-                    operation_name,
-                    child_of=global_tracer().active_span,
+                operation_name,
+                child_of=global_tracer().active_span,
             ):
                 return func(*args, **kwargs)
 
