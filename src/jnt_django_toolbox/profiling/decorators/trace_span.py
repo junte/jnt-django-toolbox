@@ -3,7 +3,6 @@ import itertools
 from functools import wraps
 
 from django.conf import settings
-
 from opentracing import global_tracer
 
 
