@@ -1,4 +1,3 @@
-import inspect
 import itertools
 from functools import wraps
 
@@ -8,8 +7,6 @@ from opentracing import global_tracer
 
 def trace_span(show_args: bool = False):
     """Wrap function for jaeger tracing."""
-    frm = inspect.stack()[1]
-    mod = inspect.getmodule(frm[0]).__name__
 
     def decorator(func):
         @wraps(func)
@@ -28,7 +25,7 @@ def trace_span(show_args: bool = False):
                 caller = args[0].__class__
 
             operation_name = "{0}.{1}{2}".format(
-                mod,
+                func.__module__,
                 "{0}.".format(caller.__name__) if caller else "",
                 func.__name__,
             )
