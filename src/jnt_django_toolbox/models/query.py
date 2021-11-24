@@ -1,8 +1,7 @@
 from django.db import models
-from django.db.models import Subquery
 
 
-class SQCount(Subquery):
+class SQCount(models.Subquery):
     """Count items of subquery."""
 
     template = "(SELECT count(*) FROM (%(subquery)s) _count)"  # noqa: WPS323

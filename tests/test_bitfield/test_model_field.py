@@ -83,7 +83,10 @@ def test_update(db):
 
     BitFieldTestModel.objects.filter(pk=instance.pk).update(
         flags=models.F("flags").bitor(
-            (~BitFieldTestModel.flags.FLAG1 | BitFieldTestModel.flags.FLAG4),
+            (
+                ~BitFieldTestModel.flags.FLAG1  # noqa: WPS465
+                | BitFieldTestModel.flags.FLAG4
+            ),
         ),
     )
     instance = BitFieldTestModel.objects.get(pk=instance.pk)

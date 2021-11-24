@@ -22,20 +22,20 @@ def test_and():
     """Test logical AND."""
     assert 1 & Bit(2) == 0
     assert 1 & Bit(0) == 1
-    assert 1 & ~Bit(0) == 0
+    assert 1 & ~Bit(0) == 0  # noqa: WPS465
     assert Bit(0) & Bit(2) == 0
     assert Bit(0) & Bit(0) == 1
-    assert Bit(0) & ~Bit(0) == 0
+    assert Bit(0) & ~Bit(0) == 0  # noqa: WPS465
 
 
 def test_or():
     """Test logical OR."""
     assert 1 | Bit(2) == 5
     assert 1 | Bit(5) == 33
-    assert 1 | ~Bit(2) == -5
+    assert 1 | ~Bit(2) == -5  # noqa: WPS465
     assert Bit(0) | Bit(2) == 5
     assert Bit(0) | Bit(5) == 33
-    assert Bit(0) | ~Bit(2) == -5
+    assert Bit(0) | ~Bit(2) == -5  # noqa: WPS465
 
 
 def test_xor():
