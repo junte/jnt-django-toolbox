@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "jnt-django-toolbox"
-version = "0.1.54"
+version = "0.2.0"
 description = ""
 authors = ["Junte <tech@junte.ru>"]
 classifiers=[
@@ -8,11 +8,7 @@ classifiers=[
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
-        'Framework :: Django :: 2.0',
-        'Framework :: Django :: 2.1',
-        'Framework :: Django :: 2.2',
-        'Framework :: Django :: 3.0',
-        'Framework :: Django :: 3.1',
+        'Framework :: Django :: 3.2',
         'Topic :: Software Development :: Libraries :: Python Modules'
 ]
 
@@ -21,8 +17,8 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.8"
-django = ">=3"
+python = "^3.9"
+django = ">=3.2"
 dateparser = "*"
 jaeger-client = {version = "*", optional = true}
 
@@ -40,7 +36,7 @@ flake8 = "*"
 flake8-pytest-style = "*"
 pytest-freezegun = "*"
 wemake-python-styleguide = "*"
-black = "^20.8b1"
+black = "*"
 flake8-class-attributes-order = "*"
 
 [tool.poetry.extras]
@@ -48,7 +44,7 @@ jaeger = ["jaeger-client"]
 
 [tool.black]
 line-length = 79
-target-version = ['py38']
+target-version = ['py39']
 include = '\.pyi?$'
 exclude = '''
 (
