@@ -2,10 +2,8 @@ from collections.abc import Iterable
 
 from django.forms import IntegerField, ValidationError
 
-from jnt_django_toolbox.admin.widgets import (
-    BitFieldReadOnlyWidget,
-    BitFieldWidget,
-)
+from jnt_django_toolbox.forms.widgets import BitFieldWidget
+from jnt_django_toolbox.forms.widgets.readonly import BitFieldReadOnlyWidget
 from jnt_django_toolbox.models.fields.bit.types import BitHandler
 
 

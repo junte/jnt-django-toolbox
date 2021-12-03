@@ -1,3 +1,5 @@
+import functools
+import types
 from functools import reduce
 from typing import Dict
 
@@ -24,3 +26,14 @@ class ObjectView:
 def dict2obj(dictionary: Dict[str, object]) -> ObjectView:
     """Create ObjectView from dictionary."""
     return ObjectView(dictionary)
+
+
+def copy_func(f):
+    g = types.FunctionType(
+        f.__code__,
+        f.__globals__,
+        name=f.__name__,
+        argdefs=f.__defaults__,
+        closure=f.__closure__,
+    )
+    return functools.update_wrapper(g, f)

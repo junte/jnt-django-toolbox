@@ -1,1 +1,1 @@
-from .bit import BitFieldFormField
+from .changelist import AdminChangeListField
