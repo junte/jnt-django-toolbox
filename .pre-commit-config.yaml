@@ -13,8 +13,3 @@ repos:
         language: system
         entry: poetry run flake8
         types: [ python ]
-  - repo: https://github.com/Junte/pre-commit
-    rev: 4d288e403c492c626b5504edda12c9602cd8a1cc
-    hooks:
-      - id: check-commit-message
-        stages: [ commit-msg ]

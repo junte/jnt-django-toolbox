@@ -15,7 +15,7 @@ def admin_field(short_description=None, allow_tags=True):
 
     Usage::
 
-        from jnt_admin_tools.decorators import admin_field
+        from jnt_django_toolbox.decorators import admin_field
         from django.contrib import admin
         from test_app.models import Bar
 
