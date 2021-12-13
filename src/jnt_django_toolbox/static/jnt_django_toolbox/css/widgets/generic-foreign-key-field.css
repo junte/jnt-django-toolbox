@@ -31,3 +31,8 @@
   width: 3%;
   margin-left: 3px;
 }
+
+.clear-generic-field img {
+    width: 13px;
+    height: 13px;
+}
