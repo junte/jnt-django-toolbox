@@ -1,8 +1,8 @@
 from collections.abc import Iterable
 
 from django.forms import IntegerField, ValidationError
+from django.utils.functional import empty
 
-from jnt_django_toolbox.forms.widgets import BitFieldWidget
 from jnt_django_toolbox.forms.widgets.readonly import BitFieldReadOnlyWidget
 from jnt_django_toolbox.models.fields.bit.types import BitHandler
 
@@ -12,8 +12,13 @@ class BitFieldFormField(IntegerField):
 
     readonly_widget = BitFieldReadOnlyWidget
 
-    def __init__(self, choices=(), widget=BitFieldWidget, *args, **kwargs):
+    def __init__(self, choices=(), widget=empty, *args, **kwargs):
         """Initializing."""
+        from jnt_django_toolbox.forms.widgets import BitFieldWidget
+
+        if widget is empty:
+            widget = BitFieldWidget
+
         if isinstance(kwargs["initial"], int):
             iv = kwargs["initial"]
             iv_list = []
