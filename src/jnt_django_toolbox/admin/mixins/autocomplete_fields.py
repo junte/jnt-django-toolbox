@@ -4,6 +4,9 @@ from django.contrib.admin.checks import BaseModelAdminChecks
 from django.contrib.admin.utils import flatten_fieldsets
 from django.db.models import ForeignKey, ManyToManyField
 
+from jnt_django_toolbox.admin.helpers.widgets import render_autocomplete_badge
+from jnt_django_toolbox.forms.widgets import autocomplete_select
+
 
 class AutocompleteFieldsAdminMixin:
     def get_autocomplete_fields(self, request):
@@ -19,6 +22,55 @@ class AutocompleteFieldsAdminMixin:
             return tuple(relation_fields)
 
         return tuple(set(admin_fields) & set(relation_fields))
+
+    def autocomplete_queryset(self, request, queryset):
+        return queryset
+
+    def autocomplete_item_data(self, instance):
+        """Get present for autocomplete item."""
+        return {
+            "id": str(instance.pk),
+            "text": str(instance),
+            "__badge__": render_autocomplete_badge(instance),
+        }
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        """
+        Get a form Field for a ForeignKey.
+
+        Override only autocomplete widget.
+        """
+        if "widget" not in kwargs:
+            if db_field.name in self.get_autocomplete_fields(request):
+                kwargs["widget"] = autocomplete_select.AutocompleteSelect(
+                    db_field,
+                    self.admin_site,
+                    using=kwargs.get("using"),
+                )
+
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+    def formfield_for_manytomany(self, db_field, request, **kwargs):
+        """
+        Get a form Field for a ManyToManyField.
+
+        Override only autocomplete widget.
+        """
+        if not db_field.remote_field.through._meta.auto_created:
+            return None
+
+        if "widget" not in kwargs:
+            autocomplete_fields = self.get_autocomplete_fields(request)
+            if db_field.name in autocomplete_fields:
+                kwargs[
+                    "widget"
+                ] = autocomplete_select.AutocompleteSelectMultiple(
+                    db_field,
+                    self.admin_site,
+                    using=kwargs.get("using"),
+                )
+
+        return super().formfield_for_manytomany(db_field, request, **kwargs)
 
     def _get_relation_fields(self):
         return (
@@ -56,7 +108,9 @@ class AutocompleteFieldsAdminMixin:
             chain.from_iterable(
                 [
                     check_autocomplete_fields_item(
-                        self, field_name, f"autocomplete_fields[{index:d}]"
+                        self,
+                        field_name,
+                        "autocomplete_fields[{0}]".format(index),
                     )
                     for index, field_name in enumerate(
                         self.get_autocomplete_fields(None)
