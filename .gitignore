@@ -20,3 +20,4 @@ _static
 .idea
 .coverage
 /pytest.ini
+/test_proj/testdb.sqlite

@@ -1,14 +1,25 @@
+import types
+
 from django import forms
 from django.conf import settings
 from django.contrib import admin
-from django.contrib.admin.widgets import (
-    SELECT2_TRANSLATIONS,
+from django.contrib.admin.widgets import SELECT2_TRANSLATIONS, get_language
+from django.db.models.fields.related_descriptors import ManyToManyDescriptor
+from django.utils.html import format_html
+from django.utils.translation import gettext_lazy as _
+
+from jnt_django_toolbox.forms.widgets import (
     AutocompleteSelect,
     AutocompleteSelectMultiple,
-    get_language,
 )
-from django.db.models.fields.related_descriptors import ManyToManyDescriptor
-from django.utils.translation import gettext_lazy as _
+
+REPLACE_SYMBOLS = types.MappingProxyType(
+    {
+        "&quot;": '"',
+        "&lt;": "<",
+        "&gt;": ">",
+    }
+)
 
 
 class AutocompleteFilter(admin.SimpleListFilter):
@@ -133,11 +144,21 @@ class AutocompleteFilter(admin.SimpleListFilter):
         )
 
     def get_remote_field(self, model):
-        return model._meta.get_field(self.field_name).remote_field
+        return getattr(model, self.field_name).field
 
     def get_rendered_widget(self, field, attrs):  # noqa: WPS615
-        return field.widget.render(
+        rendered_widget = field.widget.render(
             name=self.parameter_name,
             value=self.value(),
             attrs=attrs,
         )
+
+        if self.is_multiple:
+            for old_symbol, new_symbol in REPLACE_SYMBOLS.items():
+                rendered_widget = rendered_widget.replace(
+                    old_symbol,
+                    new_symbol,
+                )
+            rendered_widget = format_html(rendered_widget)
+
+        return rendered_widget
