@@ -32,6 +32,7 @@ class AutocompleteMixin:
                 raise AdminAutocompleteError(field)
 
             field = related_objects[0].remote_field
+        self._query_params = kwargs.get("query_params") or {}
         super().__init__(field, *args, **kwargs)
 
     @property
@@ -61,6 +62,12 @@ class AutocompleteMixin:
                 ),
             },
         )
+
+    def build_attrs(self, base_attrs, extra_attrs=None):
+        widget_attrs = super().build_attrs(base_attrs, extra_attrs=extra_attrs)
+        for attr, attr_value in self._query_params.items():
+            widget_attrs["data-autocomplete--{0}".format(attr)] = attr_value
+        return widget_attrs
 
 
 class AutocompleteSelect(AutocompleteMixin, BaseAutocompleteSelect):

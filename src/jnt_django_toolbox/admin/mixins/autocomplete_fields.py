@@ -8,31 +8,8 @@ from jnt_django_toolbox.admin.helpers.widgets import render_autocomplete_badge
 from jnt_django_toolbox.forms.widgets import autocomplete_select
 
 
-class AutocompleteFieldsAdminMixin:
-    def get_autocomplete_fields(self, request):
-        autocomplete_fields = super().get_autocomplete_fields(request)
-
-        if autocomplete_fields:
-            return autocomplete_fields
-
-        admin_fields = self._get_admin_fields(request)
-        relation_fields = self._get_relation_fields()
-
-        if not admin_fields:
-            return tuple(relation_fields)
-
-        return tuple(set(admin_fields) & set(relation_fields))
-
-    def autocomplete_queryset(self, request, queryset):
-        return queryset
-
-    def autocomplete_item_data(self, instance):
-        """Get present for autocomplete item."""
-        return {
-            "id": str(instance.pk),
-            "text": str(instance),
-            "__badge__": render_autocomplete_badge(instance),
-        }
+class AutocompleteWidgetsUpdateAdminMixin:
+    """Update autocomplete widgets for models."""
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         """
@@ -71,6 +48,36 @@ class AutocompleteFieldsAdminMixin:
                 )
 
         return super().formfield_for_manytomany(db_field, request, **kwargs)
+
+
+class AutocompleteFieldsAdminMixin(AutocompleteWidgetsUpdateAdminMixin):
+    def get_autocomplete_fields(self, request):
+        autocomplete_fields = super().get_autocomplete_fields(request)
+
+        if autocomplete_fields:
+            return autocomplete_fields
+
+        admin_fields = self._get_admin_fields(request)
+        relation_fields = self._get_relation_fields()
+
+        if not admin_fields:
+            return tuple(relation_fields)
+
+        return tuple(set(admin_fields) & set(relation_fields))
+
+    def autocomplete_queryset(self, request, queryset):
+        if not queryset.ordered:
+            queryset = queryset.order_by(*self.get_ordering(request))
+
+        return queryset
+
+    def autocomplete_item_data(self, instance):
+        """Get present for autocomplete item."""
+        return {
+            "id": str(instance.pk),
+            "text": str(instance),
+            "__badge__": render_autocomplete_badge(instance),
+        }
 
     def _get_relation_fields(self):
         return (

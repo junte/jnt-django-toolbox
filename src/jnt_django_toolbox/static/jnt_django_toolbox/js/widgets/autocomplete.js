@@ -15,10 +15,11 @@
                         model_name: $element.data("model-name"),
                         field_name: $element.data("field-name"),
                     }
+                    let prefix = "autocomplete-";
 
                     for (let fieldName in $element.data()) {
-                      if (fieldName.startsWith("autocomplete-")){
-                         queryParams[fieldName] = $element.data(fieldName);
+                      if (fieldName.startsWith(prefix)){
+                         queryParams[fieldName.slice(prefix.length).toLowerCase()] = $element.data(fieldName);
                       }
                     }
 
