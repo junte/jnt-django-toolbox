@@ -74,7 +74,9 @@ class AutocompleteFieldsAdminMixin(AutocompleteWidgetsUpdateAdminMixin):
     def autocomplete_item_data(self, instance):
         """Get present for autocomplete item."""
         return {
-            "id": str(instance.pk),
+            "id": instance.pk
+            if isinstance(instance.pk, int)
+            else str(instance.pk),
             "text": str(instance),
             "__badge__": render_autocomplete_badge(instance),
         }
