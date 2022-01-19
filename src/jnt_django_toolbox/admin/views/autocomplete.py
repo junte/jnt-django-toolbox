@@ -1,9 +1,11 @@
+from django.apps import apps
 from django.contrib.admin.sites import site
 from django.contrib.admin.views.autocomplete import (
     AutocompleteJsonView as BaseAutocompleteJsonView,
 )
 from django.core.exceptions import PermissionDenied
-from django.http import JsonResponse
+from django.db import models
+from django.http import Http404, JsonResponse
 
 
 class AutocompleteFieldsError(Exception):
@@ -31,7 +33,7 @@ class AutocompleteJsonView(BaseAutocompleteJsonView):
         return JsonResponse(
             {
                 "results": [
-                    self.model_admin.autocomplete_item_data(instance)
+                    self.model_admin.autocomplete_item_data(instance, request)
                     for instance in context["object_list"]
                 ],
                 "pagination": {"more": context["page_obj"].has_next()},
@@ -43,6 +45,48 @@ class AutocompleteJsonView(BaseAutocompleteJsonView):
         queryset = super().get_queryset()
 
         return self.model_admin.autocomplete_queryset(self.request, queryset)
+
+    def process_request(self, request):  # noqa: WPS238
+        """Process request."""
+        try:
+            app_label = request.GET["app_label"]
+            model_name = request.GET["model_name"]
+            field_name = request.GET.get("field_name")
+        except KeyError as err:
+            raise PermissionDenied from err
+
+        if field_name:
+            return super().process_request(request)
+
+        try:
+            source_model = apps.get_model(app_label, model_name)
+        except LookupError as err:
+            raise PermissionDenied from err
+
+        try:
+            model_admin = self.admin_site._registry[source_model]
+        except KeyError as err:
+            raise PermissionDenied from err
+
+        if not model_admin.get_search_fields(request):
+            raise Http404(
+                "{0} must have search_fields for the autocomplete_view.".format(
+                    type(model_admin).__qualname__,
+                )
+            )
+
+        to_field_name = "id"
+        source_field = models.ForeignKey(
+            source_model,
+            on_delete=models.CASCADE,
+        )
+
+        return (
+            request.GET.get("term", ""),
+            model_admin,
+            source_field,
+            to_field_name,
+        )
 
     def _check_inherit_model_admin(self) -> None:
         """Check inherit model_admin."""

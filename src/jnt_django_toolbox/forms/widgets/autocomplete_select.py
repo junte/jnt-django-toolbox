@@ -1,3 +1,5 @@
+from unittest.mock import MagicMock
+
 from django import forms
 from django.conf import settings
 from django.contrib.admin.widgets import SELECT2_TRANSLATIONS
@@ -28,11 +30,12 @@ class AutocompleteMixin:
         """Init autocomplete mixin."""
         if isinstance(field, type) and issubclass(field, models.Model):
             related_objects = field._meta.related_objects
-            if not related_objects:
-                raise AdminAutocompleteError(field)
+            if related_objects:
+                field = related_objects[0].remote_field
+            else:
+                field = _fake_field(field)
 
-            field = related_objects[0].remote_field
-        self._query_params = kwargs.get("query_params") or {}
+        self._query_params = kwargs.pop("query_params", {})
         super().__init__(field, *args, **kwargs)
 
     @property
@@ -90,3 +93,13 @@ class AutocompleteSelectMultiple(
         self.choices.field.label_from_instance = original_label_from_instance
 
         return option_groups
+
+
+def _fake_field(model: models.Model):
+    """Fake field factory."""
+    mock_field = MagicMock()
+    mock_field.model = model
+    mock_field.name = ""
+    mock_field.remote_field.model = model
+    mock_field.remote_field.field_name = "id"
+    return mock_field

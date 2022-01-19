@@ -71,7 +71,7 @@ class AutocompleteFieldsAdminMixin(AutocompleteWidgetsUpdateAdminMixin):
 
         return queryset
 
-    def autocomplete_item_data(self, instance):
+    def autocomplete_item_data(self, instance, request):
         """Get present for autocomplete item."""
         return {
             "id": instance.pk

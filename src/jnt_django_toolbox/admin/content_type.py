@@ -53,8 +53,8 @@ class BaseContentTypeAdmin(admin.ModelAdmin):
 
         return queryset.filter(id__in=ids)
 
-    def autocomplete_item_data(self, instance):
-        item_data = super().autocomplete_item_data(instance)
+    def autocomplete_item_data(self, instance, request):
+        item_data = super().autocomplete_item_data(instance, request)
 
         model = instance.model_class()
 
