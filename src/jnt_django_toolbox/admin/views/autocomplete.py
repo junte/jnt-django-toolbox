@@ -48,6 +48,7 @@ class AutocompleteJsonView(BaseAutocompleteJsonView):
 
     def process_request(self, request):  # noqa: WPS238
         """Process request."""
+        self._apply_pagination(request)
         try:
             app_label = request.GET["app_label"]
             model_name = request.GET["model_name"]
@@ -87,6 +88,11 @@ class AutocompleteJsonView(BaseAutocompleteJsonView):
             source_field,
             to_field_name,
         )
+
+    def _apply_pagination(self, request) -> None:
+        page_size = request.GET.get("page_size")
+        if page_size:
+            self.paginate_by = int(page_size)
 
     def _check_inherit_model_admin(self) -> None:
         """Check inherit model_admin."""
