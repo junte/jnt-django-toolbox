@@ -29,9 +29,10 @@ class AutocompleteMixin:
     def __init__(self, field, *args, **kwargs):
         """Init autocomplete mixin."""
         if isinstance(field, type) and issubclass(field, models.Model):
-            related_objects = field._meta.related_objects
-            if related_objects:
-                field = related_objects[0].remote_field
+            for related_object in field._meta.related_objects:
+                if related_object.model is field:
+                    field = related_object.remote_field
+                    break
             else:
                 field = _fake_field(field)
 
