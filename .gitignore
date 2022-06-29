@@ -21,3 +21,4 @@ _static
 .coverage
 /pytest.ini
 /test_proj/testdb.sqlite
+coverage_html
