@@ -5,7 +5,7 @@ from django.core.exceptions import FieldDoesNotExist
 from django.urls import NoReverseMatch
 from django.utils.html import format_html
 
-from jnt_django_toolbox.admin.helpers.urls import admin_change_url
+from jnt_django_toolbox.admin.helpers.urls import admin_url_provider
 from jnt_django_toolbox.helpers.objects import copy_func
 
 EMPTY_VALUE = "-"
@@ -33,7 +33,7 @@ def object_change_link(obj, empty_description="-", field_present=None) -> str:
     try:
         return format_html(
             '<a href="{0}">{1}</a>',
-            admin_change_url(obj),
+            admin_url_provider.change_url(obj),
             obj_present,
         )
     except NoReverseMatch:
