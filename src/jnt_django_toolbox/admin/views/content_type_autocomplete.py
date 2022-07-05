@@ -3,7 +3,7 @@ from django.http import Http404, JsonResponse
 from django.urls import reverse
 from django.utils.text import capfirst
 
-from jnt_django_toolbox.admin.helpers.urls import admin_autocomplete_url
+from jnt_django_toolbox.admin.helpers.urls import admin_url_provider
 
 
 class ContentTypeAutocompleteView(AutocompleteJsonView):
@@ -45,7 +45,7 @@ class ContentTypeAutocompleteView(AutocompleteJsonView):
         )
 
     def get_autocomplete_url(self, content_type):
-        return admin_autocomplete_url(content_type.model_class())
+        return admin_url_provider.autocomplete(content_type.model_class())
 
     def filter_queryset(self, queryset):
         return self._filter_queryset_by_ids(queryset)

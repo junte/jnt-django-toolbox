@@ -3,7 +3,7 @@ from django.contrib.contenttypes.fields import (
     GenericForeignKey as BaseGenericForeignKey,
 )
 
-from jnt_django_toolbox.admin.helpers.urls import admin_autocomplete_url
+from jnt_django_toolbox.admin.helpers.urls import admin_url_provider
 
 
 class GenericForeignKey(BaseGenericForeignKey):
@@ -26,4 +26,4 @@ class GenericForeignKey(BaseGenericForeignKey):
         ]
 
     def has_autocomplete_url(self, model):
-        return bool(admin_autocomplete_url(model))
+        return bool(admin_url_provider.autocomplete_url(model))

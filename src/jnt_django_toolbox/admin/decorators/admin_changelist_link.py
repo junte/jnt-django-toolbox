@@ -3,7 +3,7 @@ from functools import wraps
 from django.forms.utils import pretty_name
 from django.utils.html import format_html
 
-from jnt_django_toolbox.admin.helpers import urls
+from jnt_django_toolbox.admin.helpers.urls import admin_url_provider
 from jnt_django_toolbox.helpers.objects import getattr_nested
 
 
@@ -58,7 +58,7 @@ def admin_changelist_link(
             related_obj = getattr_nested(obj, attr)
             if related_obj is None:
                 return empty_description
-            url = urls.admin_changelist_url(related_obj.model)
+            url = admin_url_provider.list_url(related_obj.model)
             if query_string:
                 url = "{0}?{1}".format(url, query_string(obj))
             return format_html(

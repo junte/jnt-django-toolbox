@@ -1,6 +1,3 @@
-from itertools import chain
-
-from django.contrib.admin.checks import BaseModelAdminChecks
 from django.contrib.admin.utils import flatten_fieldsets
 from django.db.models import ForeignKey, ManyToManyField
 
@@ -97,33 +94,4 @@ class AutocompleteFieldsAdminMixin(AutocompleteWidgetsUpdateAdminMixin):
     def _is_relation_field(self, field):
         return isinstance(field, (ForeignKey, ManyToManyField)) and bool(
             self.admin_site._registry.get(field.remote_field.model)
-        )
-
-    def check(self, **kwargs):
-        return [
-            *super().check(**kwargs),
-            *self._check_autocomplete_mixin(),
-        ]
-
-    def _check_autocomplete_mixin(self):
-        if "autocomplete_fields" in self.__class__.__dict__.keys():
-            return []
-
-        check_autocomplete_fields_item = (
-            BaseModelAdminChecks()._check_autocomplete_fields_item
-        )
-
-        return list(
-            chain.from_iterable(
-                [
-                    check_autocomplete_fields_item(
-                        self,
-                        field_name,
-                        "autocomplete_fields[{0}]".format(index),
-                    )
-                    for index, field_name in enumerate(
-                        self.get_autocomplete_fields(None)
-                    )
-                ]
-            )
         )

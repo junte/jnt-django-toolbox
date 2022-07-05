@@ -3,7 +3,7 @@ from functools import wraps
 from django.forms.utils import pretty_name
 from django.utils.html import format_html
 
-from jnt_django_toolbox.admin.helpers import urls
+from jnt_django_toolbox.admin.helpers.urls import admin_url_provider
 from jnt_django_toolbox.helpers.objects import getattr_nested
 
 
@@ -46,7 +46,7 @@ def admin_link(attr, short_description=None, empty_description="-"):
             related_obj = getattr_nested(isntance, attr)
             if related_obj is None:
                 return empty_description
-            url = urls.admin_change_url(related_obj)
+            url = admin_url_provider.change_url(related_obj)
             return format_html(
                 '<a href="{0}">{1}</a>',
                 url,
