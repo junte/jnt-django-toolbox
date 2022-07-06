@@ -1,3 +1,5 @@
+from urllib.parse import urlencode
+
 from django.contrib import admin
 from django.urls import NoReverseMatch, reverse
 
@@ -68,7 +70,28 @@ class _AdminUrlProvider:
         model,
         model_admin: admin.ModelAdmin | None = None,
     ) -> str | None:
-        return self.for_view("autocomplete", model, model_admin)
+        site = self._get_admin_site(model_admin)
+
+        query_params = {
+            "app_label": model._meta.app_label,
+            "model_name": model._meta.model_name,
+            "field_name": "",
+        }
+        related_objects = model._meta.related_objects
+        if related_objects:
+            remote_field = related_objects[0].remote_field
+            query_params.update(
+                {
+                    "app_label": remote_field.model._meta.app_label,
+                    "model_name": remote_field.model._meta.model_name,
+                    "field_name": remote_field.name,
+                },
+            )
+
+        return "{0}?{1}".format(
+            reverse("{0}:autocomplete".format(site.name)),
+            urlencode(query_params),
+        )
 
     def __call__(self, model):
         return {
@@ -82,10 +105,7 @@ class _AdminUrlProvider:
         model,
         model_admin: admin.ModelAdmin | None = None,
     ) -> str:
-        if model_admin:
-            site = model_admin.admin_site
-        else:
-            site = admin.site
+        site = self._get_admin_site(model_admin)
 
         return "{0}:{1}_{2}_{3}".format(
             site.name,
@@ -99,6 +119,15 @@ class _AdminUrlProvider:
             return reverse(view_name, **kwargs)
         except NoReverseMatch:
             return None
+
+    def _get_admin_site(
+        self,
+        model_admin: admin.ModelAdmin | None = None,
+    ) -> admin.AdminSite:
+        if model_admin:
+            return model_admin.admin_site
+
+        return admin.site
 
 
 admin_url_provider = _AdminUrlProvider()
