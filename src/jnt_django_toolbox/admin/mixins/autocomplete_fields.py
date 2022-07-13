@@ -54,13 +54,10 @@ class AutocompleteFieldsAdminMixin(AutocompleteWidgetsUpdateAdminMixin):
         if autocomplete_fields:
             return autocomplete_fields
 
-        admin_fields = self._get_admin_fields(request)
+        # we returns all model related fields
         relation_fields = self._get_relation_fields()
 
-        if not admin_fields:
-            return tuple(relation_fields)
-
-        return tuple(set(admin_fields) & set(relation_fields))
+        return tuple(relation_fields)
 
     def autocomplete_queryset(self, request, queryset):
         if not queryset.ordered:
