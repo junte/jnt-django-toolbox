@@ -87,13 +87,18 @@ class AutocompleteSelectMultiple(
         """Return a list of optgroups for this widget."""
         original_label_from_instance = self.choices.field.label_from_instance
 
-        self.choices.field.label_from_instance = render_autocomplete_badge
+        self.choices.field.label_from_instance = (
+            self._autocomplete_label_from_instance
+        )
 
         option_groups = super().optgroups(name, value, attr=attr)
 
         self.choices.field.label_from_instance = original_label_from_instance
 
         return option_groups
+
+    def _autocomplete_label_from_instance(self, instance, present=None):
+        return render_autocomplete_badge(instance, present, self.admin_site)
 
 
 def _fake_field(model: models.Model):
