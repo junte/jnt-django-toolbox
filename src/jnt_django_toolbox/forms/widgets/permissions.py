@@ -77,9 +77,8 @@ class PermissionSelectMultipleWidget(forms.CheckboxSelectMultiple):
             if permission_type.endswith(model_part):
                 permission_type = permission_type[: -len(model_part)]
 
-            app_label = permission.content_type.app_label
-            app = app_label.replace("_", " ")
             model_class = permission.content_type.model_class()
+            app_config = model_class._meta.app_config
             model_verbose_name = (
                 model_class._meta.verbose_name if model_class else None
             )
@@ -95,15 +94,15 @@ class PermissionSelectMultipleWidget(forms.CheckboxSelectMultiple):
                 self.custom_permission_types.append(permission_type)
 
             is_app_or_model_different = (
-                last_model != model_class or last_app != app
+                last_model != model_class or last_app != app_config
             )
             if is_app_or_model_different:
                 row = {
                     "model": model_verbose_name,
                     "model_class": model_class,
                     "model_class_name": model_class_name,
-                    "app": app,
-                    "app_label": app_label,
+                    "app_config": app_config,
+                    "app_label": permission.content_type.app_label,
                     "permissions": {},
                 }
 
@@ -112,7 +111,7 @@ class PermissionSelectMultipleWidget(forms.CheckboxSelectMultiple):
             if is_app_or_model_different:
                 table.append(row)
 
-            last_app = app
+            last_app = app_config
             last_model = model_class
 
         return table
