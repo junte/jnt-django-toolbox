@@ -36,11 +36,12 @@
     {% ifchanged row.model %}
       <tr>
         <td>
-          {{ row.model|capfirst }}
+          {{ row.model|default_if_none:""|capfirst }}
         </td>
         {% for permission_type in default_permission_types %}
           {% with row.permissions|get_item:permission_type as permission %}
             <td class="
+
               {% if permission %}{{ permission_type }}{% endif %} {% if permission in groups_permissions %}disabled{% endif %}">
               {% if permission %}
                 <input name="{{ name }}" title="{{ permission.name|translate|capfirst }}"

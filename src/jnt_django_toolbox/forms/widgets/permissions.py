@@ -1,6 +1,7 @@
 from typing import Any, Dict, List
 
 from django import forms
+from django.apps import apps
 
 DEFAULT_PERMISSIONS = ("add", "change", "delete", "view")
 
@@ -78,7 +79,13 @@ class PermissionSelectMultipleWidget(forms.CheckboxSelectMultiple):
                 permission_type = permission_type[: -len(model_part)]
 
             model_class = permission.content_type.model_class()
-            app_config = model_class._meta.app_config
+
+            app_config = (
+                model_class._meta.app_config
+                if model_class
+                else apps.get_app_config(permission.content_type.app_label)
+            )
+
             model_verbose_name = (
                 model_class._meta.verbose_name if model_class else None
             )
