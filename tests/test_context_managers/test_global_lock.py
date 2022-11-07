@@ -99,7 +99,6 @@ def test_already_runned_expired(context):
             context.acquired = acquired
 
     cache.add(build_global_cache_key("test_lock"), 1, 1)
-
     time.sleep(1)
 
     demo()
