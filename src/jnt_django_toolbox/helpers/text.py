@@ -46,7 +46,7 @@ def snack_case_to_camel_case(text: str) -> str:
     text = _validate_text(text)
 
     first, *words = text.split("_")
-    return "{0}{1}".format(first, "".join(map(lambda x: x.title(), words)))
+    return "{0}{1}".format(first, "".join(word.title() for word in words))
 
 
 def remove_prefix(text: str, prefix: str) -> str:

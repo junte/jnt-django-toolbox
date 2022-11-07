@@ -136,12 +136,12 @@ class BitHandler:
         """Evaluate."""
         return self.mask, []
 
-    def get_bit(self, bit_number):
+    def get_bit(self, bit_number):  # noqa:WPS615
         """Get bit by position."""
         mask = 2 ** int(bit_number)
         return Bit(bit_number, self._value & mask != 0)
 
-    def set_bit(self, bit_number, true_or_false):
+    def set_bit(self, bit_number, true_or_false):  # noqa:WPS615
         """Set bit in position."""
         mask = 2 ** int(bit_number)
         if true_or_false:
