@@ -1,39 +1,50 @@
 'use strict';
 {
   const $ = django.jQuery;
+  const PREFIX = "autocomplete-";
 
-  $.fn.djangoAdminSelect2 = function () {
+  const init = function ($element, options) {
+    const settings = $.extend({
+      ajax: {
+        data: function (params) {
+          // data-autocomplete-<param>
+          // example: data-autocomplete-id
+
+          let queryParams = {
+            term: params.term,
+            page: params.page,
+            app_label: element.dataset.appLabel,
+            model_name: element.dataset.modelName,
+            field_name: element.dataset.fieldName
+          }
+
+          for (let fieldName in $element.data()) {
+            if (fieldName.startsWith(PREFIX)) {
+              queryParams[fieldName.slice(PREFIX.length).toLowerCase()] = $element.data(fieldName);
+            }
+          }
+
+          return queryParams;
+        }
+      },
+      escapeMarkup: function (text) {
+        return text;
+      },
+      templateSelection: function (data, container) {
+        if (data.hasOwnProperty("__badge__") && !data.text.startsWith("<a") && container && container.is("li")) {
+          data.text = data.__badge__;
+        }
+        return data.text;
+      },
+    }, options);
+    $element.select2(settings);
+  };
+
+  $.fn.djangoAdminSelect2 = function (options) {
+    const settings = $.extend({}, options);
     $.each(this, function (i, element) {
-      $(element).select2({
-        ajax: {
-          data: (params) => {
-            let queryParams = {
-              term: params.term,
-              page: params.page,
-              app_label: element.dataset.appLabel,
-              model_name: element.dataset.modelName,
-              field_name: element.dataset.fieldName
-            }
-            let prefix = "autocomplete-";
-
-            for (let fieldName in $(element).data()) {
-              if (fieldName.startsWith(prefix)) {
-                queryParams[fieldName.slice(prefix.length).toLowerCase()] = $(element).data(fieldName);
-              }
-            }
-
-            return queryParams;
-          }
-        }, escapeMarkup: function (text) {
-          return text;
-        },
-        templateSelection: function (data, container) {
-          if (data.hasOwnProperty("__badge__") && !data.text.startsWith("<a") && container && container.is("li")) {
-            data.text = data.__badge__;
-          }
-          return data.text;
-        },
-      });
+      const $element = $(element);
+      init($element, settings);
     });
     return this;
   };
