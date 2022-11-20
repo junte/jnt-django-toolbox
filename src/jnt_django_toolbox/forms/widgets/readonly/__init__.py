@@ -4,4 +4,3 @@ from .many_to_many import ManyToManyReadonlyWidget
 from .generic_foreign_key import GenericForeignKeyReadonlyWidget
 from .string_field import StringReadonlyWidget
 from .boolean import BooleanReadonlyWidget
-from .bit import BitFieldReadOnlyWidget
