@@ -1,3 +1,5 @@
+from http import HTTPStatus
+
 from django.contrib.admin.views.autocomplete import AutocompleteJsonView
 from django.http import Http404, JsonResponse
 from django.urls import reverse
@@ -15,7 +17,10 @@ class ContentTypeAutocompleteView(AutocompleteJsonView):
             )
             raise Http404(msg_template.format(type(self.model_admin).__name__))
         if not self.has_perm(request):
-            return JsonResponse({"error": "403 Forbidden"}, status=403)
+            return JsonResponse(
+                {"error": "403 Forbidden"},
+                status=HTTPStatus.FORBIDDEN,
+            )
 
         self.term = request.GET.get("term", "")
         self.paginator_class = self.model_admin.paginator

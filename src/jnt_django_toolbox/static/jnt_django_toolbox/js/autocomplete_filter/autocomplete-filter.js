@@ -1,4 +1,4 @@
-(function($) {
+(function ($) {
   $(document).ready(function () {
     $('#changelist-filter select').on('change', function (e, choice) {
       var val = $(e.target).val() || '';
@@ -19,12 +19,13 @@
 
   function search_add(name, value) {
     var new_search_hash = search_to_hash();
-    if ( ! (decodeURIComponent(name) in new_search_hash)) {
+    if (!(decodeURIComponent(name) in new_search_hash)) {
       new_search_hash[decodeURIComponent(name)] = [];
     }
     new_search_hash[decodeURIComponent(name)].push(decodeURIComponent(value));
     return hash_to_search(new_search_hash);
   }
+
   // pduey: remove a variable/value pair from the current query string and return updated href
   function search_remove(name, value) {
     var new_search_hash = search_to_hash();
@@ -38,14 +39,16 @@
   }
 
   function search_to_hash() {
-    var h={};
-    if (window.location.search == undefined || window.location.search.length < 1) { return h;}
+    var h = {};
+    if (window.location.search == undefined || window.location.search.length < 1) {
+      return h;
+    }
     q = window.location.search.slice(1).split('&');
     for (var i = 0; i < q.length; i++) {
       var key_val = q[i].split('=');
       // replace '+' (alt space) char explicitly since decode does not
-      var hkey = decodeURIComponent(key_val[0]).replace(/\+/g,' ');
-      var hval = decodeURIComponent(key_val[1]).replace(/\+/g,' ');
+      var hkey = decodeURIComponent(key_val[0]).replace(/\+/g, ' ');
+      var hval = decodeURIComponent(key_val[1]).replace(/\+/g, ' ');
       if (h[hkey] == undefined) {
         h[hkey] = [];
       }
