@@ -13,9 +13,9 @@
           let queryParams = {
             term: params.term,
             page: params.page,
-            app_label: element.dataset.appLabel,
-            model_name: element.dataset.modelName,
-            field_name: element.dataset.fieldName
+            app_label: $element[0].dataset.appLabel,
+            model_name: $element[0].dataset.modelName,
+            field_name: $element[0].dataset.fieldName
           }
 
           for (let fieldName in $element.data()) {
