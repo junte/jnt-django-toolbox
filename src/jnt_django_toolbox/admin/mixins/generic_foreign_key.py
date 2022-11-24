@@ -4,8 +4,8 @@ from django import forms
 from django.contrib.contenttypes.models import ContentType
 from django.template.response import TemplateResponse
 
-from jnt_django_toolbox.db.fields import GenericForeignKey
 from jnt_django_toolbox.forms.widgets import GenericForeignKeyWidget
+from jnt_django_toolbox.models.fields import GenericForeignKey
 
 
 class GenericForeignKeyAdminMixin:

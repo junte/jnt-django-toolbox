@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 
-from jnt_django_toolbox.db.fields import GenericForeignKey
+from jnt_django_toolbox.models.fields import GenericForeignKey
 
 
 class Tag(models.Model):

@@ -6,7 +6,6 @@ from django.core.exceptions import FieldDoesNotExist
 from django.db import models
 from django.http import HttpRequest
 
-from jnt_django_toolbox.db.fields import GenericForeignKey
 from jnt_django_toolbox.forms.widgets.readonly import (
     ForeignKeyReadonlyWidget,
     GenericForeignKeyReadonlyWidget,
@@ -15,6 +14,7 @@ from jnt_django_toolbox.forms.widgets.readonly import (
     StringReadonlyWidget,
 )
 from jnt_django_toolbox.forms.widgets.readonly.base import BaseReadOnlyWidget
+from jnt_django_toolbox.models.fields import GenericForeignKey
 
 READONLY_WIDGETS = types.MappingProxyType(
     {
