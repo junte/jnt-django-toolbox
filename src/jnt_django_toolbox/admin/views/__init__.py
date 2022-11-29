@@ -1,3 +1,3 @@
 from .base_admin_page import BaseAdminPageView, AdminPageBreadcrumb
-from .base_instance_model_admin_page import BaseInstanceModelAdminPageView
 from .base_model_admin_page import BaseModelAdminPageView
+from .base_instance_model_admin_page import BaseInstanceModelAdminPageView
