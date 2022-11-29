@@ -3,6 +3,7 @@ import typing as ty
 from django.contrib import admin
 from django.contrib.auth import get_permission_codename
 from django.db import models, transaction
+from django.urls import reverse
 
 from jnt_django_toolbox.admin.helpers.urls import admin_url_provider
 from jnt_django_toolbox.admin.views.base_admin_page import (
@@ -38,12 +39,15 @@ class BaseModelAdminPageView(BaseAdminPageView):
 
     def get_breadcrumbs(self) -> list[AdminPageBreadcrumb]:
         model = self.get_model()
+
         breadcrumbs = [
             AdminPageBreadcrumb(
                 title=model._meta.app_label,
-                href="/{0}/{1}/".format(
+                href="{0}{1}/".format(
+                    reverse(
+                        "{0}:index".format(self.model_admin.admin_site.name),
+                    ),
                     model._meta.app_label,
-                    self.model_admin.admin_site.name,
                 ),
             ),
             AdminPageBreadcrumb(
