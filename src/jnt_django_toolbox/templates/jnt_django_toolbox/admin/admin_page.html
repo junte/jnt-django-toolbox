@@ -1,0 +1,61 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block extrastyle %}{{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static 'admin/css/forms.css' %}"/>
+{% endblock %}
+
+{% block extrahead %}{{ block.super }}
+    <script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
+    {{ media }}
+{% endblock %}
+
+{% block breadcrumbs %}
+    <div class="breadcrumbs">
+        <a href="{% url 'admin:index' %}">Home</a>
+        {% for breadcrumb in breadcrumbs %}
+            {% if breadcrumb.href %}
+                &rsaquo; <a href="{{ breadcrumb.href }}">{{ breadcrumb.title|capfirst }}</a>
+            {% elif breadcrumb.title %}
+                &rsaquo; {{ breadcrumb.title|capfirst }}
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock breadcrumbs %}
+
+{% block content %}
+    {% if help_text %}
+        <div class="help" style="margin-bottom: 20px">
+            {{ help_text|safe }}
+        </div>
+    {% endif %}
+    <div id="content-main">
+        {{ form.non_field_errors }}
+        {% if submit_label %}
+            <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-content">
+                    <fieldset class="module aligned ">
+                        {% for field in form %}
+                            <div class="form-row">
+                                <div>
+                                    {{ field.errors }}
+                                    {{ field.label_tag }} {{ field }}
+                                    {% if field.help_text %}
+                                        <div class="help">{{ field.help_text|safe }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </fieldset>
+                    <div class="submit-row">
+                        <input class="default" type="submit" value="{{ submit_label }}"/>
+                    </div>
+
+                    {% block results %}
+                    {% endblock %}
+                </div>
+            </form>
+        {% endif %}
+    </div>
+{% endblock %}
