@@ -38,6 +38,19 @@
       },
     }, options);
     $element.select2(settings);
+    /*
+    * Hacky fix for a bug in select2 with jQuery 3.6.0's new nested-focus "protection"
+    * see: https://github.com/select2/select2/issues/5993
+    * see: https://github.com/jquery/jquery/issues/4382
+    *
+    * TODO: Recheck with the select2 GH issue and remove once this is fixed on their side
+    */
+    $element.on('select2:open', function (e) {
+      const searchInput = $element.data('select2').$dropdown.find('.select2-search__field')[0];
+      if (searchInput) {
+        searchInput.focus();
+      }
+    });
   };
 
   $.fn.djangoAdminSelect2 = function (options) {
