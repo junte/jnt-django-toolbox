@@ -1,3 +1,4 @@
+import contextlib
 from typing import Tuple
 
 from django.contrib.contenttypes.fields import GenericForeignKey
@@ -30,14 +31,13 @@ def object_change_link(obj, empty_description="-", field_present=None) -> str:
 
     obj_present = str(getattr(obj, field_present) if field_present else obj)
 
-    try:
-        return format_html(
-            '<a href="{0}">{1}</a>',
-            admin_url_provider.change_url(obj),
-            obj_present,
-        )
-    except NoReverseMatch:
-        return "{0} (id: {1})".format(obj, obj.id)
+    with contextlib.suppress(NoReverseMatch):
+        url = admin_url_provider.change_url(obj)
+
+    if url:
+        return format_html('<a href="{0}">{1}</a>', url, obj_present)
+
+    return "{0} [id: {1}]".format(obj, obj.id)
 
 
 def _parse_list_field_attr(attr) -> Tuple[str, str]:
