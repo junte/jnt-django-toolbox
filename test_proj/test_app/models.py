@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 
-from jnt_django_toolbox.models.fields import GenericForeignKey
+from jnt_django_toolbox.models.fields import GenericForeignKeyField
 
 
 class Tag(models.Model):
@@ -65,7 +65,7 @@ class Comment(models.Model):
         ContentType, on_delete=models.SET_NULL, null=True, blank=True
     )
     object_id = models.PositiveIntegerField(null=True, blank=True)
-    owner = GenericForeignKey()
+    owner = GenericForeignKeyField()
     author = models.ForeignKey(
         get_user_model(), on_delete=models.CASCADE, related_name="comments"
     )

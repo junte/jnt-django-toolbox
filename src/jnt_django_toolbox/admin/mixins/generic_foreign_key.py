@@ -5,7 +5,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.template.response import TemplateResponse
 
 from jnt_django_toolbox.forms.widgets import GenericForeignKeyWidget
-from jnt_django_toolbox.models.fields import GenericForeignKey
+from jnt_django_toolbox.models.fields import GenericForeignKeyField
 
 
 class GenericForeignKeyAdminMixin:
@@ -121,7 +121,7 @@ class GenericForeignKeyAdminMixin:
         return (
             not field.auto_created
             and field.is_relation
-            and isinstance(field, GenericForeignKey)
+            and isinstance(field, GenericForeignKeyField)
         )
 
     def _get_content_type_autocomplete_attrs(self, generic_field):

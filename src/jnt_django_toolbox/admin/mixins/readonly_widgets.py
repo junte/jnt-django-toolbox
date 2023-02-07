@@ -14,7 +14,7 @@ from jnt_django_toolbox.forms.widgets.readonly import (
     StringReadonlyWidget,
 )
 from jnt_django_toolbox.forms.widgets.readonly.base import BaseReadOnlyWidget
-from jnt_django_toolbox.models.fields import GenericForeignKey
+from jnt_django_toolbox.models.fields import GenericForeignKeyField
 
 READONLY_WIDGETS = types.MappingProxyType(
     {
@@ -24,7 +24,7 @@ READONLY_WIDGETS = types.MappingProxyType(
         models.ManyToOneRel: ManyToManyReadonlyWidget(),
         models.CharField: StringReadonlyWidget(),
         models.TextField: StringReadonlyWidget(),
-        GenericForeignKey: GenericForeignKeyReadonlyWidget(),
+        GenericForeignKeyField: GenericForeignKeyReadonlyWidget(),
     },
 )
 

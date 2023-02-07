@@ -1,7 +1,7 @@
 import contextlib
 from typing import Tuple
 
-from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.fields import GenericForeignKeyField
 from django.core.exceptions import FieldDoesNotExist
 from django.urls import NoReverseMatch
 from django.utils.html import format_html
@@ -69,7 +69,7 @@ def _get_display_related_field(target_obj, attr):
 
     if model_field.many_to_many or model_field.one_to_many:
         return get_display_for_many(obj.all(), field_name)
-    elif isinstance(model_field, GenericForeignKey):
+    elif isinstance(model_field, GenericForeignKeyField):
         return get_display_for_gfk(obj)
 
     return object_change_link(obj)

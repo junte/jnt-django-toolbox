@@ -6,7 +6,7 @@ from django.contrib.contenttypes.fields import (
 from jnt_django_toolbox.admin.helpers.urls import admin_url_provider
 
 
-class GenericForeignKey(BaseGenericForeignKey):
+class GenericForeignKeyField(BaseGenericForeignKey):
     def __init__(self, *args, **kwargs):
         self.related_models = kwargs.pop("related_models", None)
         super().__init__(*args, **kwargs)
