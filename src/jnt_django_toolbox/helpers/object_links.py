@@ -25,19 +25,25 @@ def add_object_link_present_function(model_admin, field_name):
     return format_html(field)
 
 
-def object_change_link(obj, empty_description="-", field_present=None) -> str:
-    if not obj:
+def object_change_link(
+    instance,
+    empty_description="-",
+    field_present=None,
+) -> str:
+    if not instance:
         return empty_description
 
-    obj_present = str(getattr(obj, field_present) if field_present else obj)
+    obj_present = str(
+        getattr(instance, field_present) if field_present else instance
+    )
 
     with contextlib.suppress(NoReverseMatch):
-        url = admin_url_provider.change_url(obj)
+        url = admin_url_provider.change_url(instance)
 
     if url:
         return format_html('<a href="{0}">{1}</a>', url, obj_present)
 
-    return "{0} [id: {1}]".format(obj, obj.id)
+    return "{0} [id: {1}]".format(instance, instance.id)
 
 
 def _parse_list_field_attr(attr) -> Tuple[str, str]:
