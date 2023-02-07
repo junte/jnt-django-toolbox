@@ -1,7 +1,7 @@
 import contextlib
 from typing import Tuple
 
-from django.contrib.contenttypes.fields import GenericForeignKeyField
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.core.exceptions import FieldDoesNotExist
 from django.urls import NoReverseMatch
 from django.utils.html import format_html
@@ -45,38 +45,38 @@ def _parse_list_field_attr(attr) -> Tuple[str, str]:
     return unpack_attr[0], unpack_attr[1] if len(unpack_attr) > 1 else None
 
 
-def get_display_for_gfk(obj) -> str:
-    if not obj:
-        return None
+def get_display_for_gfk(instance) -> str:
+    if not instance:
+        return ""
 
     return format_html(
         '<span class="gfk-object-type">{0}</span> {1}'.format(
-            obj._meta.model_name,
-            object_change_link(obj),
+            instance._meta.model_name,
+            object_change_link(instance),
         ),
     )
 
 
-def _get_display_related_field(target_obj, attr):
+def _get_display_related_field(instance, attr):
     attr, field_name = _parse_list_field_attr(attr)
 
-    obj = getattr(target_obj, attr, None)
+    obj = getattr(instance, attr, None)
 
     if not obj:
         return format_html(EMPTY_VALUE)
 
-    model_field = target_obj._meta.get_field(attr)
+    model_field = instance._meta.get_field(attr)
 
     if model_field.many_to_many or model_field.one_to_many:
         return get_display_for_many(obj.all(), field_name)
-    elif isinstance(model_field, GenericForeignKeyField):
+    elif isinstance(model_field, GenericForeignKey):
         return get_display_for_gfk(obj)
 
     return object_change_link(obj)
 
 
-def get_display_for_many(objects, field_present=None) -> str:
-    if not objects.exists():
+def get_display_for_many(instances, field_present=None) -> str:
+    if not instances.exists():
         return EMPTY_VALUE
 
     return format_html(
@@ -87,7 +87,7 @@ def get_display_for_many(objects, field_present=None) -> str:
                     getattr(instance, field_present)
                     if field_present
                     else instance
-                    for instance in objects
+                    for instance in instances
                 ),
             ),
         ),
