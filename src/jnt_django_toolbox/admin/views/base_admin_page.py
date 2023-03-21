@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from django import forms
 from django.conf import settings
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import FormView
 
@@ -18,6 +19,23 @@ class AdminPageBreadcrumb:
     href: str | None = None
 
 
+class SubmitButton:
+    def __init__(self, name: str, label: str, clazz: str = "default"):
+        self._name = name
+        self._label = label
+        self._class = clazz
+
+    @property
+    def html(self) -> str | None:
+        return mark_safe(  # noqa: S703 S308
+            '<input class="{0}" type="submit" value="{1}" name="{2}"/>'.format(
+                self._class,
+                self._label,
+                self._name,
+            ),
+        )
+
+
 class BaseAdminPageView(PermissionRequiredMixin, FormView):
     site_title = _("Django site admin")
     site_header = _("Django administration")
@@ -25,11 +43,12 @@ class BaseAdminPageView(PermissionRequiredMixin, FormView):
     title = "Admin Page"
     help_text: str | None = None
     template_name = "jnt_django_toolbox/admin/admin_page.html"
-    submit_label = ""
+    submit_label = ""  # obsolete
     success_url = "."
     message_safe = True
     form_class = _EmptyForm
     permission_required: str | ty.Iterable[str] | None = None
+    submit_buttons: ty.Iterable[SubmitButton] = []
 
     @property
     def media(self):
@@ -44,6 +63,13 @@ class BaseAdminPageView(PermissionRequiredMixin, FormView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        if self.submit_label:
+            self.submit_buttons.append(
+                SubmitButton(
+                    name=self.submit_label,
+                    label=self.submit_label,
+                )
+            )
         context.update(
             site_url=self.site_url,
             site_title=self.site_title,
@@ -55,9 +81,9 @@ class BaseAdminPageView(PermissionRequiredMixin, FormView):
             request=self.request,
             user=self.request.user,
             has_permission=self.has_permission(),
-            submit_label=self.submit_label,
             breadcrumbs=self.get_breadcrumbs(),
             has_file_field=context["form"].is_multipart(),
+            submit_buttons=self.submit_buttons,
         )
         return context
 
