@@ -57,6 +57,7 @@ class BaseAdminPageView(PermissionRequiredMixin, FormView):
             has_permission=self.has_permission(),
             submit_label=self.submit_label,
             breadcrumbs=self.get_breadcrumbs(),
+            has_file_field=context["form"].is_multipart(),
         )
         return context
 
