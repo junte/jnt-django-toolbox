@@ -29,6 +29,7 @@ def object_change_link(
     instance,
     empty_description="-",
     field_present=None,
+    target: str = None,
 ) -> str:
     if not instance:
         return empty_description
@@ -41,7 +42,12 @@ def object_change_link(
         url = admin_url_provider.change_url(instance)
 
     if url:
-        return format_html('<a href="{0}">{1}</a>', url, obj_present)
+        return format_html(
+            '<a href="{0}"{1}>{2}</a>',
+            url,
+            ' target="{0}"'.format(target) if target else "",
+            obj_present,
+        )
 
     return "{0} [id: {1}]".format(instance, instance.id)
 
