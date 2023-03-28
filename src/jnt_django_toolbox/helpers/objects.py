@@ -1,7 +1,6 @@
 import functools
 import types
 from functools import reduce
-from typing import Dict
 
 
 def getattr_nested(instance, attr, *args):
@@ -18,12 +17,12 @@ def getattr_nested(instance, attr, *args):
 class ObjectView:
     """Object view."""
 
-    def __init__(self, dictionary: Dict[str, object]):
+    def __init__(self, dictionary: dict[str, object]):
         """Initialize self."""
         self.__dict__ = dictionary
 
 
-def dict2obj(dictionary: Dict[str, object]) -> ObjectView:
+def dict2obj(dictionary: dict[str, object]) -> ObjectView:
     """Create ObjectView from dictionary."""
     return ObjectView(dictionary)
 

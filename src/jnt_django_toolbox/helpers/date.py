@@ -1,6 +1,5 @@
 import calendar
 from datetime import date, datetime, timedelta
-from typing import Union
 
 import dateparser
 from django.utils import timezone
@@ -11,7 +10,7 @@ from jnt_django_toolbox.consts.time import (
     SECONDS_PER_MINUTE,
 )
 
-Number = Union[int, float]
+Number = int | float
 
 
 def date2datetime(value: date) -> datetime:  # noqa: WPS110

@@ -1,4 +1,4 @@
-from typing import Any, Dict, List
+import typing as ty
 
 from django import forms
 from django.apps import apps
@@ -43,9 +43,9 @@ class PermissionSelectMultipleWidget(forms.CheckboxSelectMultiple):
         }
 
     template_name = "jnt_django_toolbox/widgets/permissions.html"
-    custom_permission_types: List[str] = []
-    groups_permissions: List[str] = []
-    extra_data: Dict[str, Any] = {}
+    custom_permission_types: list[str] = []
+    groups_permissions: list[str] = []
+    extra_data: dict[str, ty.Any] = {}
 
     def get_context(self, name, value, attrs):
         if value is None:

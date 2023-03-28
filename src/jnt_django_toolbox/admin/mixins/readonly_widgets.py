@@ -1,5 +1,4 @@
 import types
-import typing as ty
 
 from django.contrib.auth.models import Permission
 from django.core.exceptions import FieldDoesNotExist
@@ -34,7 +33,7 @@ class ReadonlyWidgetsMixin:
         self,
         field_name: str,
         request: HttpRequest = None,
-    ) -> ty.Optional[BaseReadOnlyWidget]:
+    ) -> BaseReadOnlyWidget | None:
         """Return readonly widget for admin readonly field."""
         if callable(field_name) or getattr(self, field_name, None):
             return None
@@ -57,6 +56,6 @@ class ReadonlyWidgetsMixin:
     def readonly_widgets(
         self,
         request: HttpRequest = None,
-    ) -> ty.Dict[models.Field, BaseReadOnlyWidget]:
+    ) -> dict[models.Field, BaseReadOnlyWidget]:
         """Return available readonly_widgets."""
         return dict(READONLY_WIDGETS)

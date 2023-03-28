@@ -1,5 +1,3 @@
-import typing
-
 from jnt_django_toolbox.forms.widgets.readonly.base import BaseReadOnlyWidget
 
 
@@ -9,7 +7,7 @@ class StringReadonlyWidget(BaseReadOnlyWidget):
         field_value,
         field_name,
         **kwargs,
-    ) -> typing.Optional[str]:
+    ) -> str | None:
         db_field = kwargs.get("db_field")
         if getattr(db_field, "choices", None):
             choice = [

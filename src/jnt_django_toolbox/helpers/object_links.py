@@ -1,5 +1,5 @@
 import contextlib
-from typing import Tuple
+import typing as ty
 
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.core.exceptions import FieldDoesNotExist
@@ -52,7 +52,7 @@ def object_change_link(
     return "{0} [id: {1}]".format(instance, instance.id)
 
 
-def _parse_list_field_attr(attr) -> Tuple[str, str]:
+def _parse_list_field_attr(attr) -> ty.Tuple[str, str]:
     unpack_attr = attr.split("__")
     return unpack_attr[0], unpack_attr[1] if len(unpack_attr) > 1 else None
 

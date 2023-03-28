@@ -1,9 +1,7 @@
-import typing as ty
-
 from django.conf import settings
 
 
-def js_jquery() -> ty.Iterable[str]:
+def js_jquery() -> list[str]:
     extra = "" if settings.DEBUG else ".min"
 
     return [

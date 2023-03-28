@@ -1,13 +1,15 @@
-from typing import Optional
-
 from django.contrib.admin.utils import lookup_field
 from django.core.exceptions import FieldDoesNotExist, ObjectDoesNotExist
 
 
 def get_present_admin_readonly_field(  # noqa: WPS212
     admin_readonly_field,
-) -> Optional[str]:
-    """Get present for AdminReadonlyField."""
+) -> str | None:
+    """
+    Get present for AdminReadonlyField.
+
+    Improve the logic.
+    """
     field_name, instance, model_admin = (
         admin_readonly_field.field["field"],
         admin_readonly_field.form.instance,
@@ -15,6 +17,9 @@ def get_present_admin_readonly_field(  # noqa: WPS212
     )
 
     if not instance or admin_readonly_field.is_checkbox:
+        return None
+
+    if hasattr(model_admin, field_name):  # noqa: WPS421
         return None
 
     try:

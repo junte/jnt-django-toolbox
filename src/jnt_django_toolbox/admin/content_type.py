@@ -1,4 +1,3 @@
-import typing as ty
 from http import HTTPStatus
 
 from django.contrib import admin
@@ -74,7 +73,7 @@ class ContentTypeAutocompleteView(AutocompleteJsonView):
         return "{0}{{id}}/change/".format(list_url)
 
 
-def get_model_admin(model) -> ty.Optional[admin.ModelAdmin]:
+def get_model_admin(model) -> admin.ModelAdmin | None:
     return site._registry.get(model)
 
 
