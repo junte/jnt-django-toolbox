@@ -63,13 +63,15 @@ class BaseAdminPageView(PermissionRequiredMixin, FormView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        submit_buttons = list(self.submit_buttons)
         if self.submit_label:
-            self.submit_buttons.append(
+            submit_buttons.append(
                 SubmitButton(
                     name=self.submit_label,
                     label=self.submit_label,
                 )
             )
+
         context.update(
             site_url=self.site_url,
             site_title=self.site_title,
