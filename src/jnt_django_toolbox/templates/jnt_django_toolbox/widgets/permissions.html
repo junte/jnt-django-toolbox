@@ -24,9 +24,9 @@
     {% ifchanged row.app_config %}
       <tr>
         {% if group.id %}
-          <th colspan="{{ default_permission_types|length|add:"3" }}">
-            {% else %}
           <th colspan="{{ default_permission_types|length|add:"2" }}">
+            {% else %}
+          <th colspan="{{ default_permission_types|length|add:"3" }}">
         {% endif %}
         {{ row.app_config.verbose_name|capfirst }}
         </th>
@@ -41,6 +41,7 @@
         {% for permission_type in default_permission_types %}
           {% with row.permissions|get_item:permission_type as permission %}
             <td class="
+
 
               {% if permission %}{{ permission_type }}{% endif %} {% if permission in groups_permissions %}disabled{% endif %}">
               {% if permission %}
@@ -68,18 +69,6 @@
               {% endif %}
             {% endwith %}
           {% endfor %}
-        </td>
-        <td>
-          {% if row.model_class_name and row.model_class_name != 'groupadminsettings' and group.id %}
-            <div class="related-widget-wrapper" id="{{ row.app_label }}_{{ row.model_class_name }}">
-              <a class="related-widget-wrapper-link add-related"
-                 id="add_{{ row.app_label }}_{{ row.model_class_name }}"
-                 href="{% url 'admin:accounts_groupadminsettings_add' %}?_app_name={{ row.app_label }}&_model_name={{ row.model_class_name }}&_group_id={{ group.id }}&_popup=1&_to_field=id&rel_model=group"
-                 title="{% blocktrans %}Change{% endblocktrans %}">
-                <img src="{% static 'admin/img/icon-changelink.svg' %}" alt="{% trans 'Change' %}"/>
-              </a>
-            </div>
-          {% endif %}
         </td>
       </tr>
     {% endifchanged %}
