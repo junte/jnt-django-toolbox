@@ -1,4 +1,6 @@
-from jnt_django_toolbox.forms.widgets.readonly.base import BaseReadOnlyWidget
+from jnt_django_toolbox.admin.forms.widgets.readonly.base import (
+    BaseReadOnlyWidget,
+)
 
 
 class StringReadonlyWidget(BaseReadOnlyWidget):
@@ -6,6 +8,7 @@ class StringReadonlyWidget(BaseReadOnlyWidget):
         self,
         field_value,
         field_name,
+        model_admin,
         **kwargs,
     ) -> str | None:
         db_field = kwargs.get("db_field")

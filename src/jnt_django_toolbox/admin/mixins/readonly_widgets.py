@@ -5,14 +5,16 @@ from django.core.exceptions import FieldDoesNotExist
 from django.db import models
 from django.http import HttpRequest
 
-from jnt_django_toolbox.forms.widgets.readonly import (
+from jnt_django_toolbox.admin.forms.widgets.readonly import (
     ForeignKeyReadonlyWidget,
     GenericForeignKeyReadonlyWidget,
     ManyToManyReadonlyWidget,
     PermissionSelectMultipleReadonlyWidget,
     StringReadonlyWidget,
 )
-from jnt_django_toolbox.forms.widgets.readonly.base import BaseReadOnlyWidget
+from jnt_django_toolbox.admin.forms.widgets.readonly.base import (
+    BaseReadOnlyWidget,
+)
 from jnt_django_toolbox.models.fields import GenericForeignKeyField
 
 READONLY_WIDGETS = types.MappingProxyType(

@@ -1,6 +1,8 @@
 from django.contrib import admin
 
-from jnt_django_toolbox.forms.widgets.readonly.base import BaseReadOnlyWidget
+from jnt_django_toolbox.admin.forms.widgets.readonly.base import (
+    BaseReadOnlyWidget,
+)
 
 
 class AdminChangeListField:
@@ -27,4 +29,5 @@ class AdminChangeListField:
             self._field_name,
             db_field=self._model_admin.model._meta.get_field(self._field_name),
             field_present=self._field_present,
+            model_admin=self._model_admin,
         )

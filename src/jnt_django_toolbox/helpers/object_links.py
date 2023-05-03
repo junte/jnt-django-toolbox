@@ -28,6 +28,7 @@ def add_object_link_present_function(model_admin, field_name):
 def object_change_link(
     instance,
     empty_description="-",
+    model_admin=None,
     field_present=None,
     target: str = None,
 ) -> str:
@@ -39,7 +40,7 @@ def object_change_link(
     )
 
     with contextlib.suppress(NoReverseMatch):
-        url = admin_url_provider.change_url(instance)
+        url = admin_url_provider.change_url(instance, model_admin=model_admin)
 
     if url:
         return format_html(
@@ -87,21 +88,25 @@ def _get_display_related_field(instance, attr):
     return object_change_link(obj)
 
 
-def get_display_for_many(instances, field_present=None) -> str:
+def get_display_for_many(
+    instances,
+    field_present=None,
+    model_admin=None,
+) -> str:
     if not instances.exists():
         return EMPTY_VALUE
 
     return format_html(
         ", ".join(
-            map(
-                object_change_link,
-                (
+            [
+                object_change_link(
                     getattr(instance, field_present)
                     if field_present
-                    else instance
-                    for instance in instances
-                ),
-            ),
+                    else instance,
+                    model_admin=model_admin,
+                )
+                for instance in instances
+            ]
         ),
     )
 

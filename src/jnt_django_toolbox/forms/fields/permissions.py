@@ -2,10 +2,10 @@ from django import forms
 from django.contrib.auth.models import Permission
 from django.db.models import QuerySet
 
-from jnt_django_toolbox.forms.widgets import PermissionSelectMultipleWidget
-from jnt_django_toolbox.forms.widgets.readonly import (
+from jnt_django_toolbox.admin.forms.widgets.readonly import (
     PermissionSelectMultipleReadonlyWidget,
 )
+from jnt_django_toolbox.forms.widgets import PermissionSelectMultipleWidget
 
 
 class PermissionSelectMultipleField(forms.ModelMultipleChoiceField):
