@@ -53,7 +53,10 @@ class BaseModelAdminPageView(BaseAdminPageView):
             AdminPageBreadcrumb(
                 title=str(model._meta.verbose_name_plural)
                 or model._meta.model_name,
-                href=admin_url_provider.list_url(model),
+                href=admin_url_provider.list_url(
+                    model,
+                    model_admin=self.model_admin,
+                ),
             ),
         ]
 
