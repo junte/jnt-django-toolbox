@@ -20,18 +20,44 @@ class AdminPageBreadcrumb:
 
 
 class SubmitButton:
-    def __init__(self, name: str, label: str, clazz: str = "default"):
+    def __init__(
+        self,
+        name: str,
+        label: str,
+        clazz: str = "default",
+        style: str = "",
+        confirm_text: str = "",
+    ):
         self._name = name
         self._label = label
         self._class = clazz
+        self._style = style
+        self._confirm_text = confirm_text
 
     @property
     def html(self) -> str | None:
-        return mark_safe(  # noqa: S703 S308
-            '<input class="{0}" type="submit" value="{1}" name="{2}"/>'.format(
-                self._class,
-                self._label,
-                self._name,
+        onclick = (
+            "return confirm('{0}')".format(self._confirm_text)
+            if self._confirm_text
+            else None
+        )
+        button_attrs = {
+            "type": "submit",
+            "class": self._class,
+            "value": self._label,
+            "name": self._name,
+            "style": self._style,
+            "onclick": onclick,
+        }
+        return mark_safe(  # noqa: S703, S308
+            "<input {0}/>".format(
+                " ".join(
+                    (
+                        '{0}="{1}"'.format(tag_attr, tag_value)
+                        for tag_attr, tag_value in button_attrs.items()
+                        if tag_value
+                    ),
+                ),
             ),
         )
 
