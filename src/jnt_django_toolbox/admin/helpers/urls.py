@@ -25,7 +25,7 @@ class _AdminUrlProvider:
                 self.allowed_urls_types,
             )
 
-        model_id = getattr(model, "id", None)
+        model_id = getattr(model, "pk", None)
         view_name = self._make_view_name(url_type, model, model_admin)
         return self._reverse(
             view_name,
