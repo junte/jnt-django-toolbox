@@ -29,9 +29,11 @@ class _AdminUrlProvider:
         view_name = self._make_view_name(url_type, model, model_admin)
         return self._reverse(
             view_name,
-            args=[model_id]
-            if model_id and url_type not in {"add", "changelist"}
-            else None,
+            args=(
+                [model_id]
+                if model_id and url_type not in {"add", "changelist"}
+                else None
+            ),
         )
 
     def add_url(self, model):

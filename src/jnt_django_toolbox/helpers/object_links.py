@@ -100,9 +100,11 @@ def get_display_for_many(
         ", ".join(
             [
                 object_change_link(
-                    getattr(instance, field_present)
-                    if field_present
-                    else instance,
+                    (
+                        getattr(instance, field_present)
+                        if field_present
+                        else instance
+                    ),
                     model_admin=model_admin,
                 )
                 for instance in instances

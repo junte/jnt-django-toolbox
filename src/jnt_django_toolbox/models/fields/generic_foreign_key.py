@@ -10,6 +10,7 @@ class GenericForeignKeyField(BaseGenericForeignKey):
     def __init__(self, *args, **kwargs):
         self.related_models = kwargs.pop("related_models", None)
         super().__init__(*args, **kwargs)
+        self.editable = True
 
     def get_related_models(self):  # noqa: WPS615
         if self.related_models is None:
