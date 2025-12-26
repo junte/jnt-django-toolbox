@@ -50,7 +50,7 @@ def object_change_link(
             obj_present,
         )
 
-    return "{0} [id: {1}]".format(instance, instance.id)
+    return "{0} [id: {1}]".format(instance, instance.pk)
 
 
 def _parse_list_field_attr(attr) -> ty.Tuple[str, str]:
